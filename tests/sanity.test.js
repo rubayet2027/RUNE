@@ -3,7 +3,7 @@
  */
 
 import { DROP_STATUS, ORDER_STATUS, USER_ROLES, BRAND_CONFIG } from '../shared/constants/index.js';
-import { shippingAddressSchema, createTicketSchema } from '../shared/validators/index.js';
+import { shippingAddressSchema, createTicketSchema, createReviewSchema } from '../shared/validators/index.js';
 import { ApiError } from '../server/src/utils/ApiError.js';
 import { PaymentService } from '../server/src/services/PaymentService.js';
 import { StripePaymentProvider } from '../server/src/services/StripePaymentProvider.js';
@@ -12,6 +12,7 @@ import { AuthService } from '../server/src/services/AuthService.js';
 import { PrintfulService } from '../server/src/services/PrintfulService.js';
 import { OrderService } from '../server/src/services/OrderService.js';
 import { TicketService } from '../server/src/services/TicketService.js';
+import { ReviewService } from '../server/src/services/ReviewService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -118,6 +119,23 @@ async function runSecurityTests() {
     process.exit(1);
   }
   console.log('✓ Test 9 Passed: Customer Support Ticket Creation & Lookup Engine operational');
+
+  // Test 10: Verify Customer Product Review Submission & Moderation Engine
+  const reviewService = new ReviewService();
+  const newReview = await reviewService.submitReview({
+    productId: 'prod_01',
+    userId: 'usr_test',
+    userName: 'Test User',
+    rating: 5,
+    title: 'Top Tier Weight',
+    comment: 'Exceptional 500 GSM Portuguese fabric quality.',
+  });
+  const moderated = await reviewService.moderateReview(newReview.id, 'APPROVED');
+  if (!newReview.id || moderated.status !== 'APPROVED') {
+    console.error('❌ Test 10 Failed: Product review submission or moderation failed');
+    process.exit(1);
+  }
+  console.log('✓ Test 10 Passed: Product Review Submission & Admin Moderation Engine operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

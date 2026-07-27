@@ -66,3 +66,10 @@ export const createTicketSchema = z.object({
   message: z.string().trim().min(5, 'Message details are required'),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional().default('MEDIUM'),
 });
+
+export const createReviewSchema = z.object({
+  productId: z.string().min(1, 'Product ID is required'),
+  rating: z.number().int().min(1, 'Rating must be at least 1 star').max(5, 'Rating cannot exceed 5 stars'),
+  title: z.string().trim().min(2, 'Review title is required').optional(),
+  comment: z.string().trim().min(5, 'Review comment must be at least 5 characters'),
+});

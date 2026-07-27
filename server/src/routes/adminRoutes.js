@@ -7,6 +7,8 @@ import {
   getAdminProducts,
   getAdminCustomers,
   getAdminTickets,
+  getAdminReviews,
+  moderateAdminReview,
   getAdminLogs,
 } from '../controllers/adminController.js';
 import { requireAuth, requireAdmin } from '../middlewares/authMiddleware.js';
@@ -23,6 +25,8 @@ router.get('/drops', getAdminDrops);
 router.get('/products', getAdminProducts);
 router.get('/customers', getAdminCustomers);
 router.get('/tickets', getAdminTickets);
+router.get('/reviews', getAdminReviews);
+router.patch('/reviews/:reviewId/moderate', moderateAdminReview);
 router.get('/logs', getAdminLogs);
 
 export default router;

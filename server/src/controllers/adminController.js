@@ -1,5 +1,6 @@
 import { OrderService } from '../services/OrderService.js';
 import { DropService } from '../services/DropService.js';
+import { ReviewService } from '../services/ReviewService.js';
 import { UserRepository } from '../repositories/userRepository.js';
 import { PrintfulSyncLogRepository } from '../repositories/printfulSyncLogRepository.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -10,6 +11,7 @@ import { USER_ROLES } from '../../../shared/constants/index.js';
 
 const orderService = new OrderService();
 const dropService = new DropService();
+const reviewService = new ReviewService();
 const userRepo = new UserRepository();
 const syncLogRepo = new PrintfulSyncLogRepository();
 
@@ -103,6 +105,18 @@ export const getAdminTickets = asyncHandler(async (req, res) => {
     },
   ];
   new ApiResponse(200, { tickets }, 'Support tickets retrieved').send(res);
+});
+
+export const getAdminReviews = asyncHandler(async (req, res) => {
+  const reviews = await reviewService.getAllReviews();
+  new ApiResponse(200, { reviews }, 'Admin product reviews retrieved').send(res);
+});
+
+export const moderateAdminReview = asyncHandler(async (req, res) => {
+  const { reviewId } = req.params;
+  const { status } = req.body;
+  const review = await reviewService.moderateReview(reviewId, status);
+  new ApiResponse(200, { review }, `Review status updated to ${status}`).send(res);
 });
 
 export const getAdminLogs = asyncHandler(async (req, res) => {

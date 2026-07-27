@@ -19,6 +19,9 @@ import {
   FileText,
   Settings as SettingsIcon,
   Layers,
+  Star,
+  Check,
+  X,
 } from 'lucide-react';
 
 export const AdminDashboardPage = () => {
@@ -61,6 +64,12 @@ export const AdminDashboardPage = () => {
     enabled: activeTab === 'tickets',
   });
 
+  const { data: reviewsData } = useQuery({
+    queryKey: ['adminReviews'],
+    queryFn: () => api.get('/admin/reviews'),
+    enabled: activeTab === 'reviews',
+  });
+
   const { data: logsData } = useQuery({
     queryKey: ['adminLogs'],
     queryFn: () => api.get('/admin/logs'),
@@ -72,6 +81,13 @@ export const AdminDashboardPage = () => {
     onSuccess: (res) => {
       setDispatchStatus(res.data);
       queryClient.invalidateQueries(['adminStats']);
+    },
+  });
+
+  const moderateReviewMutation = useMutation({
+    mutationFn: ({ reviewId, status }) => api.patch(`/admin/reviews/${reviewId}/moderate`, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['adminReviews']);
     },
   });
 
@@ -97,6 +113,7 @@ export const AdminDashboardPage = () => {
   const productsList = productsData?.data?.products || [];
   const customersList = customersData?.data?.customers || [];
   const ticketsList = ticketsData?.data?.tickets || [];
+  const reviewsList = reviewsData?.data?.reviews || [];
   const logsList = logsData?.data?.logs || [];
 
   const tabs = [
@@ -264,7 +281,7 @@ export const AdminDashboardPage = () => {
       {/* TAB 5: DISPATCH */}
       {activeTab === 'dispatch' && (
         <Card className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">SECTION 16 BULK PRINTFUL ENGINE</h2>
+          <h2 className="font-serif text-xl font-bold text-[#FFFFFF] uppercase tracking-wider">SECTION 16 BULK PRINTFUL ENGINE</h2>
           <p className="text-xs text-[#8E9192] leading-relaxed">
             Batch submission engine formatted specifically for Printful sync variant payloads.
           </p>
@@ -283,7 +300,37 @@ export const AdminDashboardPage = () => {
       {activeTab === 'reviews' && (
         <div className="space-y-4">
           <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">REVIEWS MODERATION QUEUE</h2>
-          <StateView type="empty" title="NO PENDING GARMENT REVIEWS" description="Customer reviews submitted post-fulfillment will appear here for approval." />
+          {reviewsList.length === 0 ? (
+            <StateView type="empty" title="NO PENDING GARMENT REVIEWS" description="Customer reviews submitted post-fulfillment will appear here for approval." />
+          ) : (
+            <Table headers={['AUTHOR', 'RATING', 'TITLE & COMMENT', 'STATUS', 'MODERATION ACTION']}>
+              {reviewsList.map((rev) => (
+                <TableRow key={rev.id}>
+                  <TableCell className="font-bold text-white">{rev.userName}</TableCell>
+                  <TableCell className="font-mono text-amber-300 font-bold">{rev.rating} ★</TableCell>
+                  <TableCell className="text-xs">
+                    <p className="text-white font-bold">{rev.title}</p>
+                    <p className="text-[#8E9192]">{rev.comment}</p>
+                  </TableCell>
+                  <TableCell><Badge variant={rev.status === 'APPROVED' ? 'active' : 'locked'}>{rev.status}</Badge></TableCell>
+                  <TableCell className="space-x-2">
+                    <button
+                      onClick={() => moderateReviewMutation.mutate({ reviewId: rev.id, status: 'APPROVED' })}
+                      className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-1 text-[10px] font-mono uppercase"
+                    >
+                      <Check className="w-3 h-3 inline mr-1" /> APPROVE
+                    </button>
+                    <button
+                      onClick={() => moderateReviewMutation.mutate({ reviewId: rev.id, status: 'REJECTED' })}
+                      className="bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-1 text-[10px] font-mono uppercase"
+                    >
+                      <X className="w-3 h-3 inline mr-1" /> REJECT
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </Table>
+          )}
         </div>
       )}
 

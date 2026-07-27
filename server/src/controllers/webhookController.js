@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 import { PaymentService } from '../services/PaymentService.js';
 import { StripePaymentProvider } from '../services/StripePaymentProvider.js';
+import { PrintfulService } from '../services/PrintfulService.js';
+import { PrintfulSyncLogRepository } from '../repositories/printfulSyncLogRepository.js';
+import { OrderRepository } from '../repositories/orderRepository.js';
+import { ORDER_STATUS } from '../../../shared/constants/index.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { ApiError } from '../utils/ApiError.js';
@@ -8,6 +12,9 @@ import { logger } from '../utils/logger.js';
 import { env } from '../config/env.js';
 
 const paymentService = new PaymentService(new StripePaymentProvider());
+const printfulService = new PrintfulService();
+const syncLogRepo = new PrintfulSyncLogRepository();
+const orderRepo = new OrderRepository();
 
 export const handleStripeWebhook = asyncHandler(async (req, res) => {
   const signature = req.headers['stripe-signature'];
@@ -44,10 +51,34 @@ export const handleStripeWebhook = asyncHandler(async (req, res) => {
 
 export const handlePrintfulWebhook = asyncHandler(async (req, res) => {
   const signature = req.headers['x-printful-signature'];
-  logger.info(`[WebhookController] Received Printful webhook event (Signature: ${signature ? 'PRESENT' : 'OPTIONAL'})`);
-  
-  const payload = req.body;
-  logger.info(`[PrintfulWebhook] Event: ${payload.type || 'package_shipped'}`);
+  logger.info(`[WebhookController] Received Printful webhook event`);
 
-  new ApiResponse(200, { received: true }, 'Printful webhook processed successfully').send(res);
+  // Verify HMAC signature in production
+  const isValid = printfulService.verifyPrintfulWebhook(req.body, signature);
+  if (!isValid && env.NODE_ENV === 'production') {
+    throw ApiError.unauthorized('Invalid Printful webhook signature');
+  }
+
+  const payload = req.body;
+  const processed = await printfulService.handleWebhookEvent(payload);
+
+  // Audit log sync results into PrintfulSyncLog table
+  await syncLogRepo.logBatchSync({
+    dropId: 'drop_01',
+    batchId: `webhook_${Date.now()}`,
+    status: processed.status === 'CANCELLED' ? 'FAILED' : 'SUCCESS',
+    printfulOrderId: processed.printfulOrderId ? String(processed.printfulOrderId) : null,
+    rawResponse: payload,
+  });
+
+  // Update order status if shipment fulfilled
+  if (processed.status === 'FULFILLED' && processed.printfulOrderId) {
+    const order = await orderRepo.findByIdOrNumber(processed.printfulOrderId);
+    if (order) {
+      await orderRepo.updateStatus(order.id, ORDER_STATUS.FULFILLED, processed.printfulOrderId);
+      logger.info(`[PrintfulWebhook] Order #${order.orderNumber} updated to FULFILLED with tracking ${processed.trackingNumber}`);
+    }
+  }
+
+  new ApiResponse(200, processed, 'Printful webhook processed and synchronized successfully').send(res);
 });

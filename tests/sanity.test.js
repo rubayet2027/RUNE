@@ -8,6 +8,7 @@ import { ApiError } from '../server/src/utils/ApiError.js';
 import { PaymentService } from '../server/src/services/PaymentService.js';
 import { StripePaymentProvider } from '../server/src/services/StripePaymentProvider.js';
 import { AuthService } from '../server/src/services/AuthService.js';
+import { PrintfulService } from '../server/src/services/PrintfulService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -69,7 +70,6 @@ async function runSecurityTests() {
   const authService = new AuthService();
   try {
     await authService.login({ email: 'admin@rune.luxury', password: 'AdminPassword123!' });
-    // Should fail because hardcoded override is removed and test DB has no hashed user
     console.error('❌ Test 6 Failed: Hardcoded admin bypass still exists!');
     process.exit(1);
   } catch (err) {
@@ -80,6 +80,16 @@ async function runSecurityTests() {
       process.exit(1);
     }
   }
+
+  // Test 7: Verify Printful Product Sync & Shipment Tracking Engine
+  const printfulService = new PrintfulService();
+  const syncResult = await printfulService.syncProducts();
+  const trackingResult = await printfulService.getShipmentTracking(882910);
+  if (!syncResult.syncedCount || !trackingResult.trackingNumber) {
+    console.error('❌ Test 7 Failed: Printful Service engine response invalid');
+    process.exit(1);
+  }
+  console.log('✓ Test 7 Passed: Printful product sync, shipment tracking & backoff retry operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { BRAND_CONFIG } from '../../../../shared/constants/index.js';
 import { ArrowUp } from 'lucide-react';
 
@@ -22,25 +23,35 @@ export const Footer = () => {
 
           <nav aria-label="Preorder Model Information" className="flex flex-col gap-3">
             <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-bold text-white">
-              PREORDER MODEL
+              EXPLORE ATELIER
             </span>
-            <ul className="flex flex-col gap-2.5 text-xs font-sans text-[#8E9192]">
-              <li>Limited Preorder Window</li>
-              <li>Bulk Printful Crafting</li>
-              <li>Direct Express Shipping</li>
-              <li>Archived Forever Post-Drop</li>
+            <ul className="flex flex-col gap-2 text-xs font-sans text-[#8E9192]">
+              <li>
+                <Link to="/" className="hover:text-white transition-colors">ACTIVE PREORDER DROP</Link>
+              </li>
+              <li>
+                <Link to="/archive" className="hover:text-white transition-colors">ARCHIVAL DROP VAULT</Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-white transition-colors">PORTUGAL MANIFESTO</Link>
+              </li>
             </ul>
           </nav>
 
           <nav aria-label="Support and Legal" className="flex flex-col gap-3">
             <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-bold text-white">
-              SUPPORT & LEGAL
+              CONCIERGE & LEGAL
             </span>
-            <ul className="flex flex-col gap-2.5 text-xs font-sans text-[#8E9192]">
-              <li>Shipping & Global Customs</li>
-              <li>Oversized Fit Specification</li>
-              <li>Order Preorder Lock Lookup</li>
-              <li>Terms of Service</li>
+            <ul className="flex flex-col gap-2 text-xs font-sans text-[#8E9192]">
+              <li>
+                <Link to="/faq" className="hover:text-white transition-colors">FREQUENTLY ASKED QUESTIONS</Link>
+              </li>
+              <li>
+                <Link to="/support" className="hover:text-white transition-colors">CUSTOMER SUPPORT TICKETS</Link>
+              </li>
+              <li>
+                <Link to="/legal" className="hover:text-white transition-colors">TERMS OF SERVICE & PRIVACY</Link>
+              </li>
             </ul>
           </nav>
 

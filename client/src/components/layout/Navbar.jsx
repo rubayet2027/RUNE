@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, User, Shield, Menu, X } from 'lucide-react';
+import { ShoppingBag, User, Shield, Menu, X, HelpCircle } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { BRAND_CONFIG } from '../../../../shared/constants/index.js';
 
 export const Navbar = () => {
   const { totalCount, openCart } = useCart();
-  const { isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -21,14 +21,19 @@ export const Navbar = () => {
       </a>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
         {/* Left Primary Navigation */}
-        <nav aria-label="Primary Navigation" className="hidden md:flex items-center gap-8 text-xs font-sans uppercase tracking-[0.2em] font-semibold">
+        <nav aria-label="Primary Navigation" className="hidden md:flex items-center gap-6 text-xs font-sans uppercase tracking-[0.2em] font-semibold">
           <Link to="/" className="text-white hover:text-[#C9C6C5] transition-colors">
-            CURRENT DROP
+            DROP
           </Link>
           <Link to="/archive" className="text-[#8E9192] hover:text-white transition-colors">
             ARCHIVE
+          </Link>
+          <Link to="/about" className="text-[#8E9192] hover:text-white transition-colors">
+            ABOUT
+          </Link>
+          <Link to="/support" className="text-[#8E9192] hover:text-white transition-colors">
+            SUPPORT
           </Link>
         </nav>
 
@@ -44,7 +49,7 @@ export const Navbar = () => {
 
         {/* Right Actions */}
         <div className="flex items-center gap-6">
-          {(isAdmin || true) && (
+          {isAdmin && (
             <Link
               to="/admin"
               className="hidden sm:flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] hover:text-white transition-colors"
@@ -56,9 +61,9 @@ export const Navbar = () => {
           )}
 
           <Link
-            to="/login"
+            to={isAuthenticated ? '/account' : '/login'}
             className="text-[#8E9192] hover:text-white transition-colors"
-            aria-label="Account Authentication"
+            aria-label={isAuthenticated ? 'Customer Account' : 'Account Authentication'}
           >
             <User className="w-5 h-5" aria-hidden="true" />
           </Link>
@@ -90,27 +95,33 @@ export const Navbar = () => {
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <nav aria-label="Mobile Navigation" className="md:hidden bg-[#121314] border-b border-[#1A1A1A] px-6 py-6 flex flex-col gap-4 text-xs uppercase tracking-[0.2em] font-sans">
-          <Link
-            to="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-white py-2 border-b border-[#1A1A1A]"
-          >
-            CURRENT DROP
+          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 border-b border-[#1A1A1A]">
+            ACTIVE DROP
           </Link>
-          <Link
-            to="/archive"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-[#8E9192] hover:text-white py-2 border-b border-[#1A1A1A]"
-          >
+          <Link to="/archive" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
             ARCHIVE
           </Link>
-          <Link
-            to="/admin"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-[#8E9192] hover:text-white py-2"
-          >
-            ADMIN PANEL
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+            ABOUT
           </Link>
+          <Link to="/faq" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+            FAQ
+          </Link>
+          <Link to="/support" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+            SUPPORT
+          </Link>
+          <Link to="/legal" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+            TERMS & PRIVACY
+          </Link>
+          {isAuthenticated ? (
+            <Link to="/account" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 font-bold">
+              MY ACCOUNT & ORDERS
+            </Link>
+          ) : (
+            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 font-bold">
+              SIGN IN / REGISTER
+            </Link>
+          )}
         </nav>
       )}
     </header>

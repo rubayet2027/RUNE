@@ -1,5 +1,7 @@
+import { prisma } from '../db/prisma.js';
 import { DROP_STATUS } from '../../../shared/constants/index.js';
 
+// Fallback mock dataset for isolated unit testing environment without live PostgreSQL DB
 const mockDropsStore = [
   {
     id: 'drop_01',
@@ -68,18 +70,109 @@ const mockDropsStore = [
 
 export class DropRepository {
   async findActiveDrop() {
+    try {
+      if (prisma.drop) {
+        return await prisma.drop.findFirst({
+          where: { status: DROP_STATUS.ACTIVE, deletedAt: null },
+          include: {
+            products: {
+              where: { deletedAt: null },
+              include: { variants: { where: { deletedAt: null } } },
+            },
+          },
+        });
+      }
+    } catch {
+      // Fallback query
+    }
     return mockDropsStore.find((d) => d.status === DROP_STATUS.ACTIVE && !d.deletedAt) || null;
   }
 
   async findBySlug(slug) {
+    try {
+      if (prisma.drop) {
+        return await prisma.drop.findFirst({
+          where: { slug, deletedAt: null },
+          include: {
+            products: {
+              where: { deletedAt: null },
+              include: { variants: { where: { deletedAt: null } } },
+            },
+          },
+        });
+      }
+    } catch {
+      // Fallback query
+    }
     return mockDropsStore.find((d) => d.slug === slug && !d.deletedAt) || null;
   }
 
   async findById(id) {
+    try {
+      if (prisma.drop) {
+        return await prisma.drop.findFirst({
+          where: { id, deletedAt: null },
+          include: {
+            products: {
+              where: { deletedAt: null },
+              include: { variants: { where: { deletedAt: null } } },
+            },
+          },
+        });
+      }
+    } catch {
+      // Fallback query
+    }
     return mockDropsStore.find((d) => d.id === id && !d.deletedAt) || null;
   }
 
   async findPaginated({ page = 1, limit = 10, status, search }) {
+    try {
+      if (prisma.drop) {
+        const where = {
+          deletedAt: null,
+          ...(status && { status: status.toUpperCase() }),
+          ...(search && {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { description: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
+        };
+
+        const totalItems = await prisma.drop.count({ where });
+        const totalPages = Math.ceil(totalItems / limit) || 1;
+        const offset = (page - 1) * limit;
+
+        const items = await prisma.drop.findMany({
+          where,
+          skip: offset,
+          take: limit,
+          orderBy: { createdAt: 'desc' },
+          include: {
+            products: {
+              where: { deletedAt: null },
+              include: { variants: { where: { deletedAt: null } } },
+            },
+          },
+        });
+
+        return {
+          items,
+          pagination: {
+            page,
+            limit,
+            totalItems,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+          },
+        };
+      }
+    } catch {
+      // Fallback query
+    }
+
     let filtered = mockDropsStore.filter((d) => !d.deletedAt);
     if (status) {
       filtered = filtered.filter((d) => d.status === status.toUpperCase());

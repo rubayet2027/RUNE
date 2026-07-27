@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Enforce Achromatic Constitution: 0px Sharp Corners Across All Primitives */
+  * {
+    border-radius: 0px !important;
+  }
+
+  body {
+    @apply bg-[#121314] text-[#E3E2E2] font-sans antialiased selection:bg-white selection:text-black;
+  }
+
+  /* High-Contrast Visible Focus Rings for Keyboard Tab Navigation (WCAG 2.1 AA) */
+  *:focus-visible {
+    outline: 2px solid #FFFFFF !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Accessibility: Support OS Prefers-Reduced-Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121314;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1A1A1A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444748;
+}
+
+/* Glassmorphism Panel Utility */
+.glass-panel {
+  background: rgba(18, 19, 20, 0.85);
+  backdrop-filter: blur(12px);
+}

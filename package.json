@@ -1,0 +1,22 @@
+{
+  "name": "rune-monorepo",
+  "version": "1.0.0",
+  "description": "RUNE Oversized Streetwear Preorder Drops Platform",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node tests/sanity.test.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0",
+    "axios": "^1.7.4",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.18.0",
+    "winston": "^3.14.2",
+    "zod": "^3.23.8"
+  }
+}

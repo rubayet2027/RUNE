@@ -1,0 +1,283 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum DropStatus {
+  UPCOMING
+  ACTIVE
+  REVIEW
+  PRODUCTION
+  ARCHIVED
+}
+
+enum OrderStatus {
+  PENDING
+  LOCKED
+  APPROVED
+  SUBMITTED_TO_PRINTFUL
+  FULFILLED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  REFUNDED
+  FAILED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EmailStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
+enum SyncStatus {
+  SUCCESS
+  FAILED
+  RETRYING
+}
+
+model User {
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String?
+  name          String?
+  role          Role            @default(CUSTOMER)
+  googleId      String?         @unique
+  orders        Order[]
+  reviews       Review[]
+  tickets       SupportTicket[]
+  auditLogs     AuditLog[]
+  deletedAt     DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([email])
+  @@index([googleId])
+  @@index([role])
+}
+
+model Drop {
+  id          String            @id @default(uuid())
+  title       String
+  slug        String            @unique
+  description String
+  status      DropStatus        @default(UPCOMING)
+  startAt     DateTime
+  endAt       DateTime
+  bannerImage String?
+  products    Product[]
+  orders      Order[]
+  syncLogs    PrintfulSyncLog[]
+  deletedAt   DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([status, startAt, endAt])
+  @@index([slug])
+}
+
+model Product {
+  id                    String           @id @default(uuid())
+  dropId                String
+  drop                  Drop             @relation(fields: [dropId], references: [id], onDelete: Cascade)
+  name                  String
+  slug                  String           @unique
+  description           String
+  price                 Int              // Stored in monetary cents to eliminate float errors
+  currency              String           @default("USD")
+  images                String[]
+  printfulSyncProductId String?
+  variants              ProductVariant[]
+  reviews               Review[]
+  deletedAt             DateTime?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  @@index([dropId, slug])
+}
+
+model ProductVariant {
+  id                    String      @id @default(uuid())
+  productId             String
+  product               Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size                  String
+  color                 String
+  sku                   String      @unique
+  stockLimit            Int         @default(100)
+  printfulSyncVariantId String?
+  orderItems            OrderItem[]
+  deletedAt             DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  @@index([productId, sku])
+  @@index([printfulSyncVariantId])
+}
+
+model Order {
+  id                   String            @id @default(uuid())
+  orderNumber          String            @unique
+  userId               String?
+  user                 User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  dropId               String
+  drop                 Drop              @relation(fields: [dropId], references: [id], onDelete: Restrict)
+  status               OrderStatus       @default(LOCKED)
+  paymentStatus        PaymentStatus     @default(PENDING)
+  paymentTransactionId String?
+  totalAmount          Int               // Stored in monetary cents
+  currency             String            @default("USD")
+  shippingAddress      Json
+  printfulOrderId      String?
+  items                OrderItem[]
+  syncLogs             PrintfulSyncLog[]
+  deletedAt            DateTime?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  @@index([dropId, status])            // Critical compound index for Section 16 bulk drop dispatch
+  @@index([userId, createdAt])
+  @@index([orderNumber])
+  @@index([paymentStatus])
+}
+
+model OrderItem {
+  id               String         @id @default(uuid())
+  orderId          String
+  order            Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productVariantId String
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id], onDelete: Restrict)
+  quantity         Int
+  unitPrice        Int            // Stored in monetary cents
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([orderId])
+  @@index([productVariantId])
+}
+
+model Review {
+  id        String       @id @default(uuid())
+  productId String
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int          // 1 to 5 rating scale
+  title     String?
+  comment   String
+  status    ReviewStatus @default(PENDING)
+  deletedAt DateTime?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([productId, status])
+  @@index([userId])
+}
+
+model SupportTicket {
+  id           String          @id @default(uuid())
+  ticketNumber String          @unique
+  userId       String?
+  user         User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail    String
+  subject      String
+  status       TicketStatus    @default(OPEN)
+  priority     TicketPriority  @default(MEDIUM)
+  messages     TicketMessage[]
+  deletedAt    DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([userId, status])
+  @@index([ticketNumber])
+}
+
+model TicketMessage {
+  id          String        @id @default(uuid())
+  ticketId    String
+  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  senderUserId String?
+  senderRole  Role          @default(CUSTOMER)
+  message     String
+  attachments String[]
+  createdAt   DateTime      @default(now())
+
+  @@index([ticketId])
+}
+
+model EmailLog {
+  id              String      @id @default(uuid())
+  recipientEmail  String
+  templateName    String
+  subject         String
+  status          EmailStatus @default(QUEUED)
+  resendMessageId String?
+  errorMessage    String?
+  metadata        Json?
+  createdAt       DateTime    @default(now())
+
+  @@index([recipientEmail, status])
+  @@index([createdAt])
+}
+
+model PrintfulSyncLog {
+  id              String     @id @default(uuid())
+  dropId          String
+  drop            Drop       @relation(fields: [dropId], references: [id], onDelete: Cascade)
+  orderId         String?
+  order           Order?     @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  batchId         String
+  status          SyncStatus @default(SUCCESS)
+  printfulOrderId String?
+  rawResponse     Json?
+  errorMessage    String?
+  createdAt       DateTime   @default(now())
+
+  @@index([dropId, status])
+  @@index([orderId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  details   Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, action])
+  @@index([createdAt])
+}

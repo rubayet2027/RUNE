@@ -7,8 +7,10 @@ import { shippingAddressSchema } from '../shared/validators/index.js';
 import { ApiError } from '../server/src/utils/ApiError.js';
 import { PaymentService } from '../server/src/services/PaymentService.js';
 import { StripePaymentProvider } from '../server/src/services/StripePaymentProvider.js';
+import { MockPaymentProvider } from '../server/src/services/MockPaymentProvider.js';
 import { AuthService } from '../server/src/services/AuthService.js';
 import { PrintfulService } from '../server/src/services/PrintfulService.js';
+import { OrderService } from '../server/src/services/OrderService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -90,6 +92,18 @@ async function runSecurityTests() {
     process.exit(1);
   }
   console.log('✓ Test 7 Passed: Printful product sync, shipment tracking & backoff retry operational');
+
+  // Test 8: Verify Decoupled Payment Provider Hot-Swapping & Refund Support
+  const mockProvider = new MockPaymentProvider();
+  paymentService.setProvider(mockProvider);
+  const mockIntent = await paymentService.createIntent({ amount: 275, currency: 'usd', orderId: 'test_ord_2' });
+  const mockRefund = await paymentService.refund('tx_mock_test_ord_2', 275);
+  
+  if (!mockIntent.idempotencyKey || mockRefund.status !== 'refunded') {
+    console.error('❌ Test 8 Failed: Payment provider hot-swapping or refund failed');
+    process.exit(1);
+  }
+  console.log('✓ Test 8 Passed: Decoupled IPaymentProvider hot-swapping & refund support operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

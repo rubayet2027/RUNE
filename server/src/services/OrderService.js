@@ -52,6 +52,26 @@ export class OrderService {
     };
   }
 
+  async refundPreorder(orderId, amount = null) {
+    const order = await this.getOrder(orderId);
+    if (order.paymentStatus === PAYMENT_STATUS.REFUNDED) {
+      throw ApiError.badRequest('Order has already been refunded');
+    }
+
+    logger.info(`[OrderService] Processing refund for order #${order.orderNumber}`);
+    const refundResult = await this.paymentService.refund(order.paymentTransactionId || order.id, amount || order.totalAmount);
+
+    await this.orderRepo.updateStatus(order.id, ORDER_STATUS.CANCELLED);
+    order.paymentStatus = PAYMENT_STATUS.REFUNDED;
+
+    return {
+      success: true,
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      refundResult,
+    };
+  }
+
   async getOrder(id) {
     const order = await this.orderRepo.findByIdOrNumber(id);
     if (!order) {

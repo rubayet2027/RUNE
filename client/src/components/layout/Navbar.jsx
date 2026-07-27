@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, User, Shield, Menu, X, HelpCircle } from 'lucide-react';
+import { ShoppingBag, User, Shield, Menu, X, PackageSearch } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { BRAND_CONFIG } from '../../../../shared/constants/index.js';
@@ -28,6 +28,9 @@ export const Navbar = () => {
           </Link>
           <Link to="/archive" className="text-[#8E9192] hover:text-white transition-colors">
             ARCHIVE
+          </Link>
+          <Link to="/track" className="text-[#8E9192] hover:text-white transition-colors">
+            TRACK ORDER
           </Link>
           <Link to="/about" className="text-[#8E9192] hover:text-white transition-colors">
             ABOUT
@@ -100,6 +103,9 @@ export const Navbar = () => {
           </Link>
           <Link to="/archive" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
             ARCHIVE
+          </Link>
+          <Link to="/track" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+            TRACK ORDER
           </Link>
           <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
             ABOUT

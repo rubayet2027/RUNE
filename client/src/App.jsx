@@ -13,6 +13,7 @@ const DropPage = lazy(() => import('./pages/DropPage.jsx').then((m) => ({ defaul
 const ProductPage = lazy(() => import('./pages/ProductPage.jsx').then((m) => ({ default: m.ProductPage })));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage.jsx').then((m) => ({ default: m.CheckoutPage })));
 const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage.jsx').then((m) => ({ default: m.OrderSuccessPage })));
+const OrderTrackingPage = lazy(() => import('./pages/OrderTrackingPage.jsx').then((m) => ({ default: m.OrderTrackingPage })));
 const ArchivePage = lazy(() => import('./pages/ArchivePage.jsx').then((m) => ({ default: m.ArchivePage })));
 const LoginPage = lazy(() => import('./pages/LoginPage.jsx').then((m) => ({ default: m.LoginPage })));
 const RegisterPage = lazy(() => import('./pages/RegisterPage.jsx').then((m) => ({ default: m.RegisterPage })));
@@ -50,6 +51,8 @@ export function App() {
                     <Route path="/product/:slug" element={<ProductPage />} />
                     <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
                     <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
+                    <Route path="/track" element={<OrderTrackingPage />} />
+                    <Route path="/track/:orderNumber" element={<OrderTrackingPage />} />
                     <Route path="/archive" element={<ArchivePage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="/contact" element={<ContactSupportPage />} />

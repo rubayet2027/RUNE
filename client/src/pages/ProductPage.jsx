@@ -8,6 +8,7 @@ import { SizeMatrix } from '../features/product/SizeMatrix.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { Badge } from '../components/ui/Badge.jsx';
 import { Card } from '../components/ui/Card.jsx';
+import { Select } from '../components/ui/Select.jsx';
 import { Lock, ChevronDown, Star, MessageSquare } from 'lucide-react';
 
 export const ProductPage = () => {
@@ -86,6 +87,14 @@ export const ProductPage = () => {
     });
   };
 
+  const ratingOptions = [
+    { value: '5', label: '★★★★★ (5 Stars — Exceptional)' },
+    { value: '4', label: '★★★★☆ (4 Stars — Excellent)' },
+    { value: '3', label: '★★★☆☆ (3 Stars — Average)' },
+    { value: '2', label: '★★☆☆☆ (2 Stars — Below Average)' },
+    { value: '1', label: '★☆☆☆☆ (1 Star — Poor)' },
+  ];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -129,7 +138,7 @@ export const ProductPage = () => {
             <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
               {product.name}
             </h1>
-            <div className="font-mono text-2xl text-white font-bold tracking-wider">
+            <div className="font-mono text-2xl text-[#FFFFFF] font-bold tracking-wider">
               ${product.price} USD
             </div>
           </div>
@@ -227,22 +236,12 @@ export const ProductPage = () => {
               )}
 
               <form onSubmit={handleReviewSubmit} className="space-y-4">
-                <div className="space-y-1">
-                  <label className="block text-[10px] font-sans uppercase tracking-widest text-[#8E9192] font-semibold">
-                    Rating (1 to 5 Stars)
-                  </label>
-                  <select
-                    value={rating}
-                    onChange={(e) => setRating(Number(e.target.value))}
-                    className="w-full bg-[#121314] border border-[#1A1A1A] text-white px-3 py-2 text-xs focus:outline-none focus:border-white"
-                  >
-                    <option value={5}>★★★★★ (5 Stars — Exceptional)</option>
-                    <option value={4}>★★★★☆ (4 Stars — Excellent)</option>
-                    <option value={3}>★★★☆☆ (3 Stars — Average)</option>
-                    <option value={2}>★★☆☆☆ (2 Stars — Below Average)</option>
-                    <option value={1}>★☆☆☆☆ (1 Star — Poor)</option>
-                  </select>
-                </div>
+                <Select
+                  label="Rating (1 to 5 Stars)"
+                  options={ratingOptions}
+                  value={String(rating)}
+                  onChange={(e) => setRating(Number(e.target.value))}
+                />
 
                 <div className="space-y-1">
                   <label className="block text-[10px] font-sans uppercase tracking-widest text-[#8E9192] font-semibold">

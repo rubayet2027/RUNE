@@ -13,7 +13,7 @@ export const handleStripeWebhook = asyncHandler(async (req, res) => {
   const signature = req.headers['stripe-signature'];
   
   // Verify Webhook Signature in production environments
-  if (process.env.NODE_ENV === 'production' && env.STRIPE_WEBHOOK_SECRET !== 'whsec_mock_stripe_webhook_secret') {
+  if (env.NODE_ENV === 'production' && !env.STRIPE_WEBHOOK_SECRET.startsWith('mock_')) {
     if (!signature) {
       throw ApiError.unauthorized('Missing stripe-signature header');
     }
@@ -21,9 +21,19 @@ export const handleStripeWebhook = asyncHandler(async (req, res) => {
       const hmac = crypto.createHmac('sha256', env.STRIPE_WEBHOOK_SECRET);
       hmac.update(JSON.stringify(req.body));
       const computed = hmac.digest('hex');
-      logger.info(`[WebhookSecurity] Stripe HMAC computed signature: ${computed.substring(0, 8)}...`);
+      
+      const expectedBuffer = Buffer.from(computed, 'utf8');
+      const receivedBuffer = Buffer.from(signature, 'utf8');
+      
+      if (expectedBuffer.length !== receivedBuffer.length || !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)) {
+        logger.warn(`[WebhookSecurity] Stripe HMAC signature mismatch from IP: ${req.ip}`);
+        throw ApiError.unauthorized('Invalid Stripe webhook signature');
+      }
+      
+      logger.info('[WebhookSecurity] Stripe HMAC signature verified successfully');
     } catch (err) {
-      throw ApiError.unauthorized('Invalid Stripe webhook signature');
+      if (err instanceof ApiError) throw err;
+      throw ApiError.unauthorized('Webhook signature verification failed');
     }
   }
 

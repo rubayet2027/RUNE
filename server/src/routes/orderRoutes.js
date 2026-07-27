@@ -4,8 +4,11 @@ import { requireAuth } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', createOrder); // Preorder creation allows guest or authenticated checkout
-router.get('/my-orders', requireAuth, getUserOrders);
+// All order endpoints require authentication — no guest checkout in preorder model
+router.use(requireAuth);
+
+router.post('/', createOrder);
+router.get('/my-orders', getUserOrders);
 router.get('/:id', getOrderById);
 
 export default router;

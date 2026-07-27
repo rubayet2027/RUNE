@@ -22,14 +22,6 @@ export const CheckoutPage = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(shippingAddressSchema),
-    defaultValues: {
-      fullName: 'Alexander Wright',
-      addressLine1: '742 Evergreen Terrace',
-      city: 'New York',
-      state: 'NY',
-      postalCode: '10001',
-      country: 'US',
-    },
   });
 
   const onSubmit = async (data) => {

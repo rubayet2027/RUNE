@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { ErrorBoundary } from './components/ui/ErrorBoundary.jsx';
 import { RootLayout } from './components/layout/RootLayout.jsx';
+import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
 import { StateView } from './components/ui/StateView.jsx';
 
 // Route Level Code Splitting (React.lazy)
@@ -43,7 +44,7 @@ export function App() {
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
                     <Route path="/archive" element={<ArchivePage />} />
-                    <Route path="/admin" element={<AdminDashboardPage />} />
+                    <Route path="/admin" element={<ProtectedRoute requireAdmin>{<AdminDashboardPage />}</ProtectedRoute>} />
                     <Route path="/login" element={<LoginPage />} />
                   </Route>
                 </Routes>

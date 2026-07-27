@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../../../shared/validators/index.js';
 import { api } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { Input } from '../components/ui/Input.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { Card } from '../components/ui/Card.jsx';
@@ -11,6 +12,7 @@ import { ShieldCheck, Lock } from 'lucide-react';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiError, setApiError] = useState('');
 
@@ -20,10 +22,6 @@ export const LoginPage = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: 'admin@rune.luxury',
-      password: 'AdminPassword123!',
-    },
   });
 
   const onSubmit = async (data) => {
@@ -31,7 +29,7 @@ export const LoginPage = () => {
     setApiError('');
     try {
       const response = await api.post('/auth/login', data);
-      localStorage.setItem('rune_token', response.data.token);
+      login(response.data.token, response.data.user);
       if (response.data.user.role === 'ADMIN') {
         navigate('/admin');
       } else {
@@ -75,7 +73,7 @@ export const LoginPage = () => {
 
           <div className="text-center pt-2">
             <span className="text-xs text-[#8E9192] font-sans">
-              Demo Admin Login: <strong className="text-white font-mono">admin@rune.luxury</strong> / <strong className="text-white font-mono">AdminPassword123!</strong>
+              Secure authentication powered by JWT & bcrypt verification.
             </span>
           </div>
         </form>

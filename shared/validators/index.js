@@ -59,3 +59,10 @@ export const paginationQuerySchema = z.object({
   sort: z.string().optional().default('createdAt'),
   order: z.enum(['asc', 'desc']).optional().default('desc'),
 });
+
+export const createTicketSchema = z.object({
+  userEmail: emailSchema,
+  subject: z.string().trim().min(3, 'Subject must be at least 3 characters'),
+  message: z.string().trim().min(5, 'Message details are required'),
+  priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional().default('MEDIUM'),
+});

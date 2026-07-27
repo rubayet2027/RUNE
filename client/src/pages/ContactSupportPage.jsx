@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createTicketSchema } from '../../../shared/validators/index.js';
+import { api } from '../services/api.js';
 import { Input } from '../components/ui/Input.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { Card } from '../components/ui/Card.jsx';
-import { MessageSquare, CheckCircle2, Shield } from 'lucide-react';
+import { MessageSquare, CheckCircle2 } from 'lucide-react';
 
 export const ContactSupportPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [ticketRef, setTicketRef] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const {
     register,
@@ -15,18 +20,23 @@ export const ContactSupportPage = () => {
     formState: { errors },
     reset,
   } = useForm({
-    defaultValues: {
-      userEmail: '',
-      subject: '',
-      message: '',
-    },
+    resolver: zodResolver(createTicketSchema),
   });
 
-  const onSubmit = (data) => {
-    const ref = `TICK-${Math.floor(100000 + Math.random() * 900000)}`;
-    setTicketRef(ref);
-    setSubmitted(true);
-    reset();
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    setApiError('');
+    try {
+      const response = await api.post('/tickets', data);
+      const ticket = response.data.ticket;
+      setTicketRef(ticket.ticketNumber || `TICK-${Math.floor(100000 + Math.random() * 900000)}`);
+      setSubmitted(true);
+      reset();
+    } catch (err) {
+      setApiError(err.message || 'Failed to submit support ticket');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -44,6 +54,12 @@ export const ContactSupportPage = () => {
       </div>
 
       <Card>
+        {apiError && (
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-none text-xs font-mono mb-6">
+            {apiError}
+          </div>
+        )}
+
         {submitted ? (
           <div className="py-8 text-center space-y-4">
             <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
@@ -64,12 +80,12 @@ export const ContactSupportPage = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <Input
               label="Your Email Address"
-              {...register('userEmail', { required: 'Email address is required' })}
+              {...register('userEmail')}
               error={errors.userEmail?.message}
             />
             <Input
               label="Subject / Preorder Reference"
-              {...register('subject', { required: 'Subject is required' })}
+              {...register('subject')}
               error={errors.subject?.message}
             />
             <div className="space-y-2">
@@ -78,14 +94,14 @@ export const ContactSupportPage = () => {
               </label>
               <textarea
                 rows={4}
-                {...register('message', { required: 'Message details are required' })}
+                {...register('message')}
                 className="w-full bg-[#121314] border border-[#1A1A1A] text-white px-4 py-3 text-xs focus:outline-none focus:border-white transition-colors"
                 placeholder="Describe your inquiry..."
               />
               {errors.message && <p className="text-[11px] font-mono text-red-400">{errors.message.message}</p>}
             </div>
 
-            <Button fullWidth size="lg" type="submit">
+            <Button fullWidth size="lg" isLoading={isSubmitting} type="submit">
               <MessageSquare className="w-4 h-4 mr-2 inline" /> DISPATCH SUPPORT TICKET
             </Button>
           </form>

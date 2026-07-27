@@ -8,6 +8,7 @@ import dropRoutes from './routes/dropRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import webhookRoutes from './routes/webhookRoutes.js';
+import ticketRoutes from './routes/ticketRoutes.js';
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/v1/drops', dropRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/webhooks', webhookRoutes);
+app.use('/api/v1/tickets', ticketRoutes);
 
 // Error handling
 app.use(notFoundHandler);

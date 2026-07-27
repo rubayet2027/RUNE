@@ -3,7 +3,7 @@
  */
 
 import { DROP_STATUS, ORDER_STATUS, USER_ROLES, BRAND_CONFIG } from '../shared/constants/index.js';
-import { shippingAddressSchema } from '../shared/validators/index.js';
+import { shippingAddressSchema, createTicketSchema } from '../shared/validators/index.js';
 import { ApiError } from '../server/src/utils/ApiError.js';
 import { PaymentService } from '../server/src/services/PaymentService.js';
 import { StripePaymentProvider } from '../server/src/services/StripePaymentProvider.js';
@@ -11,6 +11,7 @@ import { MockPaymentProvider } from '../server/src/services/MockPaymentProvider.
 import { AuthService } from '../server/src/services/AuthService.js';
 import { PrintfulService } from '../server/src/services/PrintfulService.js';
 import { OrderService } from '../server/src/services/OrderService.js';
+import { TicketService } from '../server/src/services/TicketService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -104,6 +105,19 @@ async function runSecurityTests() {
     process.exit(1);
   }
   console.log('✓ Test 8 Passed: Decoupled IPaymentProvider hot-swapping & refund support operational');
+
+  // Test 9: Verify Customer Support Ticket Creation & Validation
+  const ticketService = new TicketService();
+  const createdTicket = await ticketService.createTicket({
+    userEmail: 'customer@rune.luxury',
+    subject: 'Preorder Sizing Assistance',
+    message: 'Need help selecting oversized hoodie sizing',
+  });
+  if (!createdTicket || !createdTicket.ticketNumber.startsWith('TICK-')) {
+    console.error('❌ Test 9 Failed: Support ticket creation invalid');
+    process.exit(1);
+  }
+  console.log('✓ Test 9 Passed: Customer Support Ticket Creation & Lookup Engine operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

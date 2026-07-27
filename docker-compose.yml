@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DATABASE_URL=postgresql://rune_user:rune_secure_password@postgres:5432/rune_db?schema=public
+      - JWT_SECRET=rune_prod_jwt_super_secret_key_881920391283
+      - STRIPE_SECRET_KEY=sk_live_mock_stripe_key
+      - STRIPE_WEBHOOK_SECRET=whsec_mock_stripe_webhook_secret
+      - PRINTFUL_API_KEY=mock_printful_api_key
+      - PRINTFUL_STORE_ID=mock_store_1001
+      - CLIENT_URL=https://rune.luxury
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: rune_postgres
+    environment:
+      POSTGRES_USER: rune_user
+      POSTGRES_PASSWORD: rune_secure_password
+      POSTGRES_DB: rune_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: rune_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  postgres_data:

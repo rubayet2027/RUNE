@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-07-27T20:40:58.626Z",
+  "version": "1.0.0",
+  "tables": [
+    "User",
+    "Drop",
+    "Product",
+    "ProductVariant",
+    "Order",
+    "OrderItem",
+    "Review",
+    "SupportTicket",
+    "PrintfulSyncLog",
+    "AuditLog"
+  ],
+  "status": "COMPLETED_SUCCESSFULLY"
+}

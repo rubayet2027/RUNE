@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /checkout
+Disallow: /order-success/
+Disallow: /api/
+
+Sitemap: https://rune.luxury/sitemap.xml

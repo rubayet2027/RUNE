@@ -14,6 +14,7 @@ import { OrderService } from '../server/src/services/OrderService.js';
 import { TicketService } from '../server/src/services/TicketService.js';
 import { ReviewService } from '../server/src/services/ReviewService.js';
 import { EmailService } from '../server/src/services/EmailService.js';
+import { StorageService } from '../server/src/services/StorageService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -152,6 +153,20 @@ async function runSecurityTests() {
     process.exit(1);
   }
   console.log('✓ Test 11 Passed: Transactional HTML Email Service Dispatch Engine operational');
+
+  // Test 12: Verify Storage & Image Upload Validation Engine
+  const storageService = new StorageService();
+  const sampleBuffer = Buffer.from('fake_image_bytes');
+  const uploadResult = await storageService.saveImage({
+    originalName: 'lookbook_01.webp',
+    buffer: sampleBuffer,
+    mimeType: 'image/webp',
+  });
+  if (!uploadResult.publicUrl || !uploadResult.filename.startsWith('img_')) {
+    console.error('❌ Test 12 Failed: Storage & Image upload engine response invalid');
+    process.exit(1);
+  }
+  console.log('✓ Test 12 Passed: Storage & Image Upload Validation Engine operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

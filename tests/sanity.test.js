@@ -13,6 +13,7 @@ import { PrintfulService } from '../server/src/services/PrintfulService.js';
 import { OrderService } from '../server/src/services/OrderService.js';
 import { TicketService } from '../server/src/services/TicketService.js';
 import { ReviewService } from '../server/src/services/ReviewService.js';
+import { EmailService } from '../server/src/services/EmailService.js';
 
 console.log('🧪 Running RUNE Platform Security & Foundation Tests...');
 
@@ -136,6 +137,21 @@ async function runSecurityTests() {
     process.exit(1);
   }
   console.log('✓ Test 10 Passed: Product Review Submission & Admin Moderation Engine operational');
+
+  // Test 11: Verify Transactional HTML Email Service Dispatch Engine
+  const emailService = new EmailService();
+  const emailLog = await emailService.sendPreorderConfirmationEmail({
+    orderNumber: 'RN-882910',
+    customerEmail: 'alexander@rune.luxury',
+    items: [{ productVariantId: 'var_01', quantity: 1 }],
+    totalAmount: 275,
+    shippingAddress: validAddress,
+  });
+  if (!emailLog || !emailLog.html.includes('RN-882910')) {
+    console.error('❌ Test 11 Failed: Transactional HTML email dispatch failed');
+    process.exit(1);
+  }
+  console.log('✓ Test 11 Passed: Transactional HTML Email Service Dispatch Engine operational');
 
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }

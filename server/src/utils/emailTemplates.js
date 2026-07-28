@@ -45,7 +45,7 @@ export const preorderConfirmationEmail = ({ customerName, orderNumber, totalAmou
   `;
 };
 
-export const bulkDispatchEmail = ({ dropTitle }) => {
+export const bulkDispatchEmail = ({ orderNumber, printfulOrderId, dropTitle }) => {
   return `
     <!DOCTYPE html>
     <html>
@@ -60,9 +60,9 @@ export const bulkDispatchEmail = ({ dropTitle }) => {
       <body>
         <div class="card">
           <div style="font-size:24px; font-weight:bold; color:#fff; text-align:center;">RUNE</div>
-          <div class="title" style="margin-top:20px;">DROP CLOSED — BULK PRODUCTION INITIATED</div>
+          <div class="title" style="margin-top:20px;">GARMENT CRAFTING STARTED — #${orderNumber}</div>
           <p style="color:#8E9192; font-size:13px; line-height:1.6;">
-            The active preorder window for <strong>${dropTitle}</strong> has officially closed. All locked orders have been compiled into a Section 16 bulk batch and submitted to Printful for Portuguese fabric crafting.
+            The active preorder window for <strong>${dropTitle || 'DROP 001'}</strong> has officially closed. Your order #${orderNumber} has been submitted in a Section 16 bulk batch to Printful (Ref #${printfulOrderId || 'PF-BATCH'}) for custom 500 GSM Portuguese fabric crafting.
           </p>
         </div>
       </body>
@@ -92,6 +92,30 @@ export const shipmentTrackingEmail = ({ orderNumber, trackingNumber, carrier }) 
             CARRIER: ${carrier}<br />
             TRACKING NUMBER: ${trackingNumber}
           </div>
+        </div>
+      </body>
+    </html>
+  `;
+};
+
+export const supportTicketReceiptEmail = ({ ticketNumber, userEmail, subject }) => {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <style>
+          body { background-color: #121314; color: #E3E2E2; font-family: sans-serif; padding: 40px; }
+          .card { max-width: 600px; margin: 0 auto; background-color: #1A1A1A; border: 1px solid #262626; padding: 40px; }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div style="font-size:24px; font-weight:bold; color:#fff; text-align:center;">RUNE</div>
+          <div style="font-size:18px; font-weight:bold; color:#FCD34D; margin-top:20px;">SUPPORT TICKET RECEIVED — #${ticketNumber}</div>
+          <p style="color:#8E9192; font-size:13px; line-height:1.6;">
+            We have received your concierge inquiry regarding <strong>${subject}</strong>. Our atelier support team will review and respond within 24 hours.
+          </p>
         </div>
       </body>
     </html>

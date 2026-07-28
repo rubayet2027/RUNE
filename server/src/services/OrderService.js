@@ -3,6 +3,7 @@ import { PrintfulSyncLogRepository } from '../repositories/printfulSyncLogReposi
 import { PaymentService } from './PaymentService.js';
 import { StripePaymentProvider } from './StripePaymentProvider.js';
 import { PrintfulService } from './PrintfulService.js';
+import { EmailService } from './EmailService.js';
 import { ORDER_STATUS, PAYMENT_STATUS } from '../../../shared/constants/index.js';
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../utils/logger.js';
@@ -13,6 +14,7 @@ export class OrderService {
     this.syncLogRepo = new PrintfulSyncLogRepository();
     this.paymentService = new PaymentService(new StripePaymentProvider());
     this.printfulService = new PrintfulService();
+    this.emailService = new EmailService();
   }
 
   async createPreorder({ userId, customerEmail, dropId, shippingAddress, items }) {
@@ -20,17 +22,20 @@ export class OrderService {
     const orderNumber = `RN-${Math.floor(100000 + Math.random() * 900000)}`;
     const totalAmount = items.reduce((acc, item) => acc + item.quantity * 180, 0);
 
+    const recipientEmail = customerEmail || 'customer@rune.luxury';
+
     const paymentResult = await this.paymentService.createIntent({
       amount: totalAmount,
       currency: 'usd',
       orderId,
-      customerEmail: customerEmail || 'customer@rune.luxury',
+      customerEmail: recipientEmail,
     });
 
     const newOrder = {
       id: orderId,
       orderNumber,
       userId: userId || 'guest_user',
+      customerEmail: recipientEmail,
       dropId,
       status: ORDER_STATUS.LOCKED,
       paymentStatus: PAYMENT_STATUS.AUTHORIZED,
@@ -45,6 +50,15 @@ export class OrderService {
 
     await this.orderRepo.create(newOrder);
     logger.info(`[OrderService] Preorder #${orderNumber} created & locked for drop ${dropId}`);
+
+    // Trigger transactional email notification
+    await this.emailService.sendPreorderConfirmationEmail({
+      orderNumber,
+      customerEmail: recipientEmail,
+      items,
+      totalAmount,
+      shippingAddress,
+    });
 
     return {
       order: newOrder,
@@ -108,6 +122,16 @@ export class OrderService {
     for (const result of bulkResult.results) {
       if (result.success) {
         await this.orderRepo.updateStatus(result.orderId, ORDER_STATUS.SUBMITTED_TO_PRINTFUL, result.printfulOrderId);
+        
+        // Trigger bulk dispatch notification email for each dispatched order
+        const order = pendingOrders.find((o) => o.id === result.orderId);
+        if (order) {
+          await this.emailService.sendBulkDispatchNotificationEmail({
+            orderNumber: order.orderNumber,
+            customerEmail: order.customerEmail || 'customer@rune.luxury',
+            printfulOrderId: result.printfulOrderId,
+          });
+        }
       }
     }
 

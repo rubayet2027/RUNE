@@ -1,10 +1,12 @@
 import { TicketRepository } from '../repositories/ticketRepository.js';
+import { EmailService } from './EmailService.js';
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../utils/logger.js';
 
 export class TicketService {
   constructor() {
     this.ticketRepo = new TicketRepository();
+    this.emailService = new EmailService();
   }
 
   async createTicket({ userEmail, subject, message, priority = 'MEDIUM', userId = null }) {
@@ -23,6 +25,14 @@ export class TicketService {
 
     const created = await this.ticketRepo.create(ticketData);
     logger.info(`[TicketService] Created support ticket #${ticketNumber} for ${userEmail}`);
+
+    // Trigger transactional support ticket receipt email
+    await this.emailService.sendSupportTicketReceiptEmail({
+      ticketNumber,
+      userEmail,
+      subject,
+    });
+
     return created;
   }
 

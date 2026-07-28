@@ -1,13 +1,19 @@
 import { ReviewRepository } from '../repositories/reviewRepository.js';
+import { OrderRepository } from '../repositories/orderRepository.js';
 import { ApiError } from '../utils/ApiError.js';
 import { logger } from '../utils/logger.js';
 
 export class ReviewService {
   constructor() {
     this.reviewRepo = new ReviewRepository();
+    this.orderRepo = new OrderRepository();
   }
 
   async submitReview({ productId, userId, userName, rating, title, comment }) {
+    if (!userId) {
+      throw ApiError.unauthorized('Authentication is required to submit a product review');
+    }
+
     logger.info(`[ReviewService] User ${userId} submitted review for product ${productId}`);
     const reviewData = {
       productId,

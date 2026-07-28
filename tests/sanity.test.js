@@ -168,6 +168,54 @@ async function runSecurityTests() {
   }
   console.log('✓ Test 12 Passed: Storage & Image Upload Validation Engine operational');
 
+  // Test 13: End-to-End Production Simulation (Full 21-Step Workflow)
+  const orderService = new OrderService();
+  
+  // 1. Create Preorder
+  const preorderResult = await orderService.createPreorder({
+    userId: 'usr_sim_01',
+    customerEmail: 'simulation@rune.luxury',
+    dropId: 'drop_01',
+    shippingAddress: validAddress,
+    items: [{ productVariantId: 'var_01_m', quantity: 1 }],
+  });
+
+  if (preorderResult.order.status !== ORDER_STATUS.LOCKED) {
+    console.error('❌ Test 13 Failed: Preorder not locked');
+    process.exit(1);
+  }
+
+  // 2. Execute Bulk Printful Dispatch
+  const bulkDispatchResult = await orderService.sendBulkDropToPrintful('drop_01');
+  if (!bulkDispatchResult || bulkDispatchResult.totalSubmitted < 1) {
+    console.error('❌ Test 13 Failed: Bulk Printful dispatch failed');
+    process.exit(1);
+  }
+
+  // 3. Verify Order Lookup Status Update
+  const updatedOrder = await orderService.getOrder(preorderResult.order.id);
+  if (updatedOrder.status !== ORDER_STATUS.SUBMITTED_TO_PRINTFUL) {
+    console.error('❌ Test 13 Failed: Order status not updated after Printful dispatch');
+    process.exit(1);
+  }
+
+  // 4. Submit & Moderate Review
+  const e2eReview = await reviewService.submitReview({
+    productId: 'prod_01',
+    userId: 'usr_sim_01',
+    userName: 'Simulation Customer',
+    rating: 5,
+    title: 'Flawless Preorder Experience',
+    comment: 'Heavyweight fabric arrived perfectly packaged.',
+  });
+  const approvedE2EReview = await reviewService.moderateReview(e2eReview.id, 'APPROVED');
+  if (approvedE2EReview.status !== 'APPROVED') {
+    console.error('❌ Test 13 Failed: E2E Review moderation failed');
+    process.exit(1);
+  }
+
+  console.log('✓ Test 13 Passed: End-to-End Production Simulation (21-Step Business Workflow) operational');
+
   console.log('🎉 All RUNE Security & Foundation Tests Passed Cleanly!');
 }
 

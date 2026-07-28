@@ -6,6 +6,7 @@ const mockOrdersStore = [
     orderNumber: 'RN-882910',
     dropId: 'drop_01',
     userId: 'user_admin',
+    productId: 'prod_01',
     status: ORDER_STATUS.LOCKED,
     paymentStatus: PAYMENT_STATUS.CAPTURED,
     totalAmount: 275,
@@ -29,16 +30,6 @@ const mockOrdersStore = [
           printfulSyncVariantId: 'pf_variant_8819',
         },
       },
-      {
-        quantity: 1,
-        unitPrice: 95,
-        productVariant: {
-          id: 'var_02_l',
-          size: 'L',
-          color: 'Washed Grey',
-          printfulSyncVariantId: 'pf_variant_9920',
-        },
-      },
     ],
   },
 ];
@@ -55,6 +46,15 @@ export class OrderRepository {
 
   async findByUserId(userId) {
     return mockOrdersStore.filter((o) => o.userId === userId);
+  }
+
+  async hasUserPurchasedProduct(userId, productId) {
+    return mockOrdersStore.some(
+      (o) =>
+        o.userId === userId &&
+        (o.productId === productId ||
+          o.items?.some((i) => i.productId === productId || i.productVariant?.id?.includes(productId)))
+    );
   }
 
   async findLockedByDropId(dropId) {

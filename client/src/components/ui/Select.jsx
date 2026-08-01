@@ -17,7 +17,7 @@ export const Select = React.forwardRef(({
   return (
     <div className="w-full flex flex-col gap-2">
       {label && (
-        <label htmlFor={selectId} className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <label htmlFor={selectId} className="text-[11px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           {label}
         </label>
       )}
@@ -28,18 +28,18 @@ export const Select = React.forwardRef(({
           value={value}
           onChange={onChange}
           aria-invalid={!!error}
-          className={`w-full bg-[#121314] border-b border-[#1A1A1A] py-3 pr-8 text-xs text-white font-mono uppercase focus:outline-none focus:border-white transition-colors duration-300 rounded-none appearance-none cursor-pointer ${
+          className={`w-full bg-rune-bg border-b border-rune-border py-3 pr-8 text-xs text-rune-primary font-mono uppercase focus:outline-none focus:border-rune-primary transition-colors duration-300 rounded-none appearance-none cursor-pointer ${
             error ? 'border-red-500' : ''
           } ${className}`}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#121314] text-white py-2">
+            <option key={opt.value} value={opt.value} className="bg-rune-bg text-rune-primary py-2">
               {opt.label}
             </option>
           ))}
         </select>
-        <ChevronDown className="w-4 h-4 text-[#8E9192] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <ChevronDown className="w-4 h-4 text-rune-secondary absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
       </div>
       {error && <span className="text-[10px] font-mono text-red-400 mt-0.5">{error}</span>}
     </div>

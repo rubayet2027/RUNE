@@ -5,10 +5,10 @@ export const SizeMatrix = ({ selectedSize, onSelectSize }) => {
   return (
     <div className="space-y-4 pt-2">
       <div className="flex justify-between items-center text-xs font-sans">
-        <span className="uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <span className="uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           SELECT OVERSIZED SIZE
         </span>
-        <button className="text-[#8E9192] hover:text-white flex items-center gap-1 underline text-[11px] focus:outline-none">
+        <button className="text-rune-secondary hover:text-rune-primary flex items-center gap-1 underline text-[11px] focus:outline-none">
           <Ruler className="w-3.5 h-3.5" aria-hidden="true" /> FIT SPECIFICATION
         </button>
       </div>
@@ -21,10 +21,10 @@ export const SizeMatrix = ({ selectedSize, onSelectSize }) => {
             role="radio"
             aria-checked={selectedSize === size}
             onClick={() => onSelectSize(size)}
-            className={`py-3.5 text-xs font-mono uppercase font-bold transition-all border rounded-none focus:outline-none focus:ring-1 focus:ring-white ${
+            className={`py-3.5 text-xs font-mono uppercase font-bold transition-all border rounded-none focus:outline-none focus:ring-1 focus:ring-rune-primary ${
               selectedSize === size
-                ? 'bg-white text-black border-white'
-                : 'bg-[#121314] text-[#8E9192] border-[#1A1A1A] hover:border-white hover:text-white'
+                ? 'bg-white text-black border-rune-primary'
+                : 'bg-rune-bg text-rune-secondary border-rune-border hover:border-rune-primary hover:text-rune-primary'
             }`}
           >
             {size}
@@ -39,7 +39,7 @@ export const SizeMatrix = ({ selectedSize, onSelectSize }) => {
         </div>
       )}
 
-      <p className="text-[11px] text-[#8E9192] font-sans italic leading-relaxed">
+      <p className="text-[11px] text-rune-secondary font-sans italic leading-relaxed">
         *Designed with custom dropped shoulders and a boxy silhouette. Order true to size for signature RUNE oversized fit.
       </p>
     </div>

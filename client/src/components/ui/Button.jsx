@@ -14,14 +14,14 @@ export const Button = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed rounded-none';
+    'inline-flex items-center justify-center font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-rune-primary disabled:opacity-50 disabled:cursor-not-allowed rounded-none';
 
   const variants = {
-    primary: 'bg-white text-[#0A0A0A] hover:bg-opacity-80 active:scale-[0.99]',
-    secondary: 'bg-transparent text-white border border-white hover:bg-white hover:text-[#0A0A0A] active:scale-[0.99]',
-    outline: 'bg-transparent text-[#C9C6C5] border border-[#1A1A1A] hover:border-white hover:text-white active:scale-[0.99]',
-    ghost: 'bg-transparent text-[#8E9192] hover:text-white hover:bg-[#1A1A1A]/40',
-    danger: 'bg-red-600 text-white hover:bg-red-700 active:scale-[0.99]',
+    primary: 'bg-rune-primary text-rune-bg hover:bg-rune-primary/90 border border-rune-primary',
+    secondary: 'bg-transparent text-rune-primary border border-rune-primary hover:bg-rune-primary hover:text-rune-bg',
+    outline: 'bg-transparent text-rune-primary border border-rune-border hover:border-rune-primary hover:text-rune-primary',
+    ghost: 'bg-transparent text-rune-secondary hover:text-rune-primary hover:bg-rune-surface',
+    danger: 'bg-red-600 text-rune-primary hover:bg-red-700 border border-red-600',
   };
 
   const sizes = {
@@ -32,7 +32,9 @@ export const Button = ({
 
   return (
     <motion.button
+      whileHover={{ y: disabled || isLoading ? 0 : -2 }}
       whileTap={{ scale: disabled || isLoading ? 1 : 0.99 }}
+      transition={{ duration: 0.15, ease: [0.25, 1, 0.5, 1] }}
       type={type}
       disabled={disabled || isLoading}
       aria-disabled={disabled || isLoading}

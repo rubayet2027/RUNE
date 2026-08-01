@@ -3,19 +3,55 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Dark Theme (Default) Variables */
+    --color-bg: #111111;
+    --color-surface: #181818;
+    --color-surface-secondary: #222222;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #B0B0B0;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-subtle: rgba(255, 255, 255, 0.04);
+  }
+
+  .light {
+    /* Light Theme Variables */
+    --color-bg: #FAFAFA;
+    --color-surface: #FFFFFF;
+    --color-surface-secondary: #F4F4F4;
+    --color-text-primary: #111111;
+    --color-text-secondary: #666666;
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-border-subtle: rgba(0, 0, 0, 0.04);
+  }
+
   /* Enforce Achromatic Constitution: 0px Sharp Corners Across All Primitives */
   * {
     border-radius: 0px !important;
   }
 
   body {
-    @apply bg-[#121314] text-[#E3E2E2] font-sans antialiased selection:bg-white selection:text-black;
+    @apply bg-rune-bg text-rune-primary font-sans antialiased selection:bg-rune-primary selection:text-rune-bg;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
   }
 
   /* High-Contrast Visible Focus Rings for Keyboard Tab Navigation (WCAG 2.1 AA) */
   *:focus-visible {
-    outline: 2px solid #FFFFFF !important;
+    outline: 2px solid var(--color-text-primary) !important;
     outline-offset: 2px !important;
+  }
+
+  /* Soft and Premium Theme Transition */
+  .theme-transitioning,
+  .theme-transitioning *,
+  .theme-transitioning ::before,
+  .theme-transitioning ::after {
+    transition: background-color 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                color 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                border-color 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                fill 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                stroke 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
   }
 }
 
@@ -33,24 +69,113 @@
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #121314;
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1A1A1A;
+  background: var(--color-border);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444748;
+  background: var(--color-text-secondary);
 }
 
-/* Glassmorphism Panel Utility */
+/* Glassmorphism Panel Utility - Updated for Light/Dark Adaptability */
 .glass-panel {
-  background: rgba(18, 19, 20, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(var(--glass-bg, 17, 17, 17), 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+.light .glass-panel {
+  --glass-bg: 250, 250, 250;
+  background: rgba(250, 250, 250, 0.75);
+}
+
+/* Lenis Smooth Scrolling Integration styling */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* SplitText Mask Reveals */
+.char-mask {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.char-reveal {
+  display: inline-block;
+  transform: translateY(105%);
+}
+
+/* Skeleton Loading Placeholder */
+.rune-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-secondary) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading-skeleton 1.5s infinite;
+}
+
+@keyframes loading-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Premium Infinitely Moving Marquee */
+@keyframes rune-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-rune-marquee {
+  display: flex;
+  width: max-content;
+  animation: rune-marquee 80s linear infinite;
+}
+
+.animate-rune-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: rune-marquee 80s linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rune-marquee,
+  .animate-rune-marquee-reverse {
+    animation-play-state: paused !important;
+    transform: none !important;
+  }
 }

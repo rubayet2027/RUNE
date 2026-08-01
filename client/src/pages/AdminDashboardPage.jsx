@@ -132,12 +132,12 @@ export const AdminDashboardPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       {/* Admin Header */}
-      <div className="border-b border-[#1A1A1A] pb-6 flex flex-col sm:flex-row justify-between sm:items-end gap-4">
+      <div className="border-b border-rune-border pb-6 flex flex-col sm:flex-row justify-between sm:items-end gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[#8E9192] uppercase tracking-[0.2em] mb-1">
-            <Shield className="w-4 h-4 text-white" /> RUNE ATELIER CONTROL CENTER
+          <div className="flex items-center gap-2 text-xs font-mono text-rune-secondary uppercase tracking-[0.2em] mb-1">
+            <Shield className="w-4 h-4 text-rune-primary" /> RUNE ATELIER CONTROL CENTER
           </div>
-          <h1 className="font-serif text-3xl font-bold text-white uppercase tracking-wider">
+          <h1 className="font-serif text-rune-primaryxl font-bold text-rune-primary uppercase tracking-wider">
             ADMINISTRATOR SUITE
           </h1>
         </div>
@@ -147,7 +147,7 @@ export const AdminDashboardPage = () => {
       </div>
 
       {/* Admin Module Tabs */}
-      <div className="flex overflow-x-auto gap-2 border-b border-[#1A1A1A] pb-4 no-scrollbar">
+      <div className="flex overflow-x-auto gap-2 border-b border-rune-border pb-4 no-scrollbar">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -157,7 +157,7 @@ export const AdminDashboardPage = () => {
               className={`flex items-center gap-2 px-4 py-2 text-xs font-mono uppercase tracking-wider whitespace-nowrap transition-colors rounded-none ${
                 activeTab === tab.id
                   ? 'bg-white text-black font-bold'
-                  : 'bg-[#121314] text-[#8E9192] border border-[#1A1A1A] hover:text-white'
+                  : 'bg-rune-bg text-rune-secondary border border-rune-border hover:text-rune-primary'
               }`}
             >
               <Icon className="w-3.5 h-3.5" /> {tab.label}
@@ -172,38 +172,38 @@ export const AdminDashboardPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card>
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">TOTAL DROP REVENUE</span>
+                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">TOTAL DROP REVENUE</span>
                 <DollarSign className="w-4 h-4 text-emerald-400" />
               </div>
-              <p className="font-mono text-2xl text-white font-bold mt-4">${stats?.totalRevenue?.toLocaleString()} USD</p>
+              <p className="font-mono text-rune-primaryxl text-rune-primary font-bold mt-4">${stats?.totalRevenue?.toLocaleString()} USD</p>
               <span className="text-[10px] font-mono text-emerald-400 mt-2 block">100% PREORDER AUTHORIZED</span>
             </Card>
 
             <Card>
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">ACTIVE DROP ORDERS</span>
-                <Package className="w-4 h-4 text-white" />
+                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">ACTIVE DROP ORDERS</span>
+                <Package className="w-4 h-4 text-rune-primary" />
               </div>
-              <p className="font-mono text-2xl text-white font-bold mt-4">{stats?.activeDropOrders}</p>
-              <span className="text-[10px] font-mono text-[#8E9192] mt-2 block">DROP 001 COLLECTION</span>
+              <p className="font-mono text-rune-primaryxl text-rune-primary font-bold mt-4">{stats?.activeDropOrders}</p>
+              <span className="text-[10px] font-mono text-rune-secondary mt-2 block">DROP 001 COLLECTION</span>
             </Card>
 
             <Card>
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">LOCKED ORDERS PENDING</span>
+                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">LOCKED ORDERS PENDING</span>
                 <Lock className="w-4 h-4 text-amber-300" />
               </div>
-              <p className="font-mono text-2xl text-amber-300 font-bold mt-4">{stats?.pendingReviewOrders}</p>
+              <p className="font-mono text-rune-primaryxl text-amber-300 font-bold mt-4">{stats?.pendingReviewOrders}</p>
               <span className="text-[10px] font-mono text-amber-300/80 mt-2 block">READY FOR PRINTFUL DISPATCH</span>
             </Card>
 
             <Card>
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">PRINTFUL FULFILLMENTS</span>
+                <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">PRINTFUL FULFILLMENTS</span>
                 <CheckCircle2 className="w-4 h-4 text-sky-400" />
               </div>
-              <p className="font-mono text-2xl text-white font-bold mt-4">{stats?.printfulFulfillments}</p>
-              <span className="text-[10px] font-mono text-[#8E9192] mt-2 block">HISTORICAL TOTAL</span>
+              <p className="font-mono text-rune-primaryxl text-rune-primary font-bold mt-4">{stats?.printfulFulfillments}</p>
+              <span className="text-[10px] font-mono text-rune-secondary mt-2 block">HISTORICAL TOTAL</span>
             </Card>
           </div>
 
@@ -211,10 +211,10 @@ export const AdminDashboardPage = () => {
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-6">
               <div className="space-y-2">
                 <Badge variant="active">SECTION 16 PRINTFUL BULK DISPATCH</Badge>
-                <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">
+                <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">
                   SEND ENTIRE DROP TO PRINTFUL
                 </h2>
-                <p className="text-xs font-sans text-[#8E9192] leading-relaxed max-w-2xl">
+                <p className="text-xs font-sans text-rune-secondary leading-relaxed max-w-2xl">
                   Locks active drop, compiles all valid preorder reservations into a single bulk batch payload, and dispatches to Printful API for production.
                 </p>
               </div>
@@ -229,14 +229,14 @@ export const AdminDashboardPage = () => {
       {/* TAB 2: DROPS */}
       {activeTab === 'drops' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">DROP COLLECTIONS</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">DROP COLLECTIONS</h2>
           <Table headers={['TITLE', 'SLUG', 'STATUS', 'START DATE', 'END DATE']}>
             <TableRow>
-              <TableCell className="font-bold text-white">DROP 001 // OBLIVION HEAVYWEIGHT COLLECTION</TableCell>
-              <TableCell className="font-mono text-[#8E9192]">drop-001-oblivion</TableCell>
+              <TableCell className="font-bold text-rune-primary">DROP 001 // OBLIVION HEAVYWEIGHT COLLECTION</TableCell>
+              <TableCell className="font-mono text-rune-secondary">drop-001-oblivion</TableCell>
               <TableCell><Badge variant="active">ACTIVE</Badge></TableCell>
-              <TableCell className="font-mono text-[#8E9192]">2026-07-27</TableCell>
-              <TableCell className="font-mono text-[#8E9192]">2026-07-31</TableCell>
+              <TableCell className="font-mono text-rune-secondary">2026-07-27</TableCell>
+              <TableCell className="font-mono text-rune-secondary">2026-07-31</TableCell>
             </TableRow>
           </Table>
         </div>
@@ -245,15 +245,15 @@ export const AdminDashboardPage = () => {
       {/* TAB 3: PRODUCTS */}
       {activeTab === 'products' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">GARMENT INVENTORY</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">GARMENT INVENTORY</h2>
           <Table headers={['PRODUCT NAME', 'SLUG', 'PRICE', 'CURRENCY', 'FABRIC SPEC']}>
             {productsList.map((prod) => (
               <TableRow key={prod.id}>
-                <TableCell className="font-bold text-white">{prod.name}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{prod.slug}</TableCell>
+                <TableCell className="font-bold text-rune-primary">{prod.name}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{prod.slug}</TableCell>
                 <TableCell className="font-mono text-emerald-400 font-bold">${prod.price}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{prod.currency}</TableCell>
-                <TableCell className="text-xs text-[#8E9192]">{prod.description}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{prod.currency}</TableCell>
+                <TableCell className="text-xs text-rune-secondary">{prod.description}</TableCell>
               </TableRow>
             ))}
           </Table>
@@ -263,14 +263,14 @@ export const AdminDashboardPage = () => {
       {/* TAB 4: ORDERS */}
       {activeTab === 'orders' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">PREORDER RESERVATION ORDERS</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">PREORDER RESERVATION ORDERS</h2>
           <Table headers={['ORDER NUMBER', 'CUSTOMER EMAIL', 'DROP BATCH', 'TOTAL AUTHORIZED', 'PREORDER STATUS']}>
             {ordersList.map((order) => (
               <TableRow key={order.id}>
-                <TableCell className="font-mono font-bold text-white">{order.orderNumber}</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">{order.orderNumber}</TableCell>
                 <TableCell>{order.customerEmail}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{order.dropTitle}</TableCell>
-                <TableCell className="font-mono font-bold text-white">${order.totalAmount} USD</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{order.dropTitle}</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">${order.totalAmount} USD</TableCell>
                 <TableCell><Badge variant="locked">{order.status}</Badge></TableCell>
               </TableRow>
             ))}
@@ -281,8 +281,8 @@ export const AdminDashboardPage = () => {
       {/* TAB 5: DISPATCH */}
       {activeTab === 'dispatch' && (
         <Card className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-[#FFFFFF] uppercase tracking-wider">SECTION 16 BULK PRINTFUL ENGINE</h2>
-          <p className="text-xs text-[#8E9192] leading-relaxed">
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">SECTION 16 BULK PRINTFUL ENGINE</h2>
+          <p className="text-xs text-rune-secondary leading-relaxed">
             Batch submission engine formatted specifically for Printful sync variant payloads.
           </p>
           <Button size="lg" isLoading={sendDropMutation.isPending} onClick={() => sendDropMutation.mutate('drop_01')}>
@@ -299,18 +299,18 @@ export const AdminDashboardPage = () => {
       {/* TAB 6: REVIEWS */}
       {activeTab === 'reviews' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">REVIEWS MODERATION QUEUE</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">REVIEWS MODERATION QUEUE</h2>
           {reviewsList.length === 0 ? (
             <StateView type="empty" title="NO PENDING GARMENT REVIEWS" description="Customer reviews submitted post-fulfillment will appear here for approval." />
           ) : (
             <Table headers={['AUTHOR', 'RATING', 'TITLE & COMMENT', 'STATUS', 'MODERATION ACTION']}>
               {reviewsList.map((rev) => (
                 <TableRow key={rev.id}>
-                  <TableCell className="font-bold text-white">{rev.userName}</TableCell>
+                  <TableCell className="font-bold text-rune-primary">{rev.userName}</TableCell>
                   <TableCell className="font-mono text-amber-300 font-bold">{rev.rating} ★</TableCell>
                   <TableCell className="text-xs">
-                    <p className="text-white font-bold">{rev.title}</p>
-                    <p className="text-[#8E9192]">{rev.comment}</p>
+                    <p className="text-rune-primary font-bold">{rev.title}</p>
+                    <p className="text-rune-secondary">{rev.comment}</p>
                   </TableCell>
                   <TableCell><Badge variant={rev.status === 'APPROVED' ? 'active' : 'locked'}>{rev.status}</Badge></TableCell>
                   <TableCell className="space-x-2">
@@ -337,11 +337,11 @@ export const AdminDashboardPage = () => {
       {/* TAB 7: TICKETS */}
       {activeTab === 'tickets' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">CONCIERGE SUPPORT QUEUE</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">CONCIERGE SUPPORT QUEUE</h2>
           <Table headers={['TICKET REF', 'CUSTOMER EMAIL', 'SUBJECT', 'STATUS', 'PRIORITY']}>
             {ticketsList.map((tick) => (
               <TableRow key={tick.id}>
-                <TableCell className="font-mono font-bold text-white">{tick.ticketNumber}</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">{tick.ticketNumber}</TableCell>
                 <TableCell>{tick.userEmail}</TableCell>
                 <TableCell>{tick.subject}</TableCell>
                 <TableCell><Badge variant="active">{tick.status}</Badge></TableCell>
@@ -355,14 +355,14 @@ export const AdminDashboardPage = () => {
       {/* TAB 8: CUSTOMERS */}
       {activeTab === 'customers' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">VIP CUSTOMER DIRECTORY</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">VIP CUSTOMER DIRECTORY</h2>
           <Table headers={['CUSTOMER NAME', 'EMAIL ADDRESS', 'ROLE', 'TOTAL RESERVATIONS']}>
             {customersList.map((cust) => (
               <TableRow key={cust.id}>
-                <TableCell className="font-bold text-white">{cust.name}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{cust.email}</TableCell>
+                <TableCell className="font-bold text-rune-primary">{cust.name}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{cust.email}</TableCell>
                 <TableCell><Badge variant="active">{cust.role}</Badge></TableCell>
-                <TableCell className="font-mono text-white">{cust.ordersCount}</TableCell>
+                <TableCell className="font-mono text-rune-primary">{cust.ordersCount}</TableCell>
               </TableRow>
             ))}
           </Table>
@@ -371,11 +371,11 @@ export const AdminDashboardPage = () => {
 
       {/* TAB 9: SETTINGS */}
       {activeTab === 'settings' && (
-        <Card className="space-y-4 text-xs font-sans text-[#8E9192]">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">ATELIER PLATFORM CONFIGURATION</h2>
+        <Card className="space-y-4 text-xs font-sans text-rune-secondary">
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">ATELIER PLATFORM CONFIGURATION</h2>
           <div className="space-y-2 font-mono">
-            <p>BRAND NAME: <span className="text-white">RUNE</span></p>
-            <p>BASE CURRENCY: <span className="text-white">USD ($)</span></p>
+            <p>BRAND NAME: <span className="text-rune-primary">RUNE</span></p>
+            <p>BASE CURRENCY: <span className="text-rune-primary">USD ($)</span></p>
             <p>TARGET SHIPPING MARKETS: <span className="text-emerald-400">US, GB, CA, AU</span></p>
             <p>PRINTFUL INTEGRATION: <span className="text-emerald-400 font-bold">CONNECTED</span></p>
             <p>STRIPE PAYMENT DRIVER: <span className="text-emerald-400 font-bold">PRE-AUTHORIZATION ACTIVE</span></p>
@@ -386,14 +386,14 @@ export const AdminDashboardPage = () => {
       {/* TAB 10: LOGS */}
       {activeTab === 'logs' && (
         <div className="space-y-4">
-          <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider">ADMINISTRATIVE AUDIT LOG TRAIL</h2>
+          <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">ADMINISTRATIVE AUDIT LOG TRAIL</h2>
           <Table headers={['ACTION', 'EXECUTED BY', 'DETAILS', 'TIMESTAMP']}>
             {logsList.map((log) => (
               <TableRow key={log.id}>
-                <TableCell className="font-mono font-bold text-white">{log.action}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{log.user}</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">{log.action}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{log.user}</TableCell>
                 <TableCell>{log.details}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">{new Date(log.timestamp).toLocaleTimeString()}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">{new Date(log.timestamp).toLocaleTimeString()}</TableCell>
               </TableRow>
             ))}
           </Table>

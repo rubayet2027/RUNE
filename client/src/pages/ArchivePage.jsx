@@ -30,14 +30,14 @@ export const ArchivePage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
-      <div className="border-b border-[#1A1A1A] pb-6 space-y-2">
-        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+      <div className="border-b border-rune-border pb-6 space-y-2">
+        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           HISTORICAL VAULT
         </span>
-        <h1 className="font-serif text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-wider">
+        <h1 className="font-serif text-rune-primaryxl sm:text-4xl font-extrabold text-rune-primary uppercase tracking-wider">
           ARCHIVED DROPS
         </h1>
-        <p className="text-xs font-sans text-[#8E9192] max-w-xl leading-relaxed">
+        <p className="text-xs font-sans text-rune-secondary max-w-xl leading-relaxed">
           RUNE operates strictly on limited preorder windows. Once a drop closes and fulfills, it enters the permanent archive and will never be reproduced.
         </p>
       </div>
@@ -51,8 +51,8 @@ export const ArchivePage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {archivedDrops.map((drop) => (
-            <div key={drop.id} className="bg-[#1A1A1A]/40 border border-[#1A1A1A] rounded-none overflow-hidden flex flex-col">
-              <div className="aspect-video relative overflow-hidden bg-[#121314]">
+            <div key={drop.id} className="bg-rune-surface/40 border border-rune-border rounded-none overflow-hidden flex flex-col">
+              <div className="aspect-video relative overflow-hidden bg-rune-bg">
                 <img
                   src={drop.bannerImage || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80'}
                   alt={drop.title}
@@ -64,13 +64,13 @@ export const ArchivePage = () => {
               </div>
               <div className="p-8 flex-1 flex flex-col justify-between space-y-6">
                 <div>
-                  <span className="text-[10px] font-mono text-[#8E9192] block mb-2">
+                  <span className="text-[10px] font-mono text-rune-secondary block mb-2">
                     RELEASED {new Date(drop.createdAt || drop.startAt).getFullYear()}
                   </span>
-                  <h3 className="font-serif text-xl font-bold text-white uppercase tracking-wider">{drop.title}</h3>
-                  <p className="text-xs font-sans text-[#8E9192] mt-3 leading-relaxed">{drop.description}</p>
+                  <h3 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">{drop.title}</h3>
+                  <p className="text-xs font-sans text-rune-secondary mt-3 leading-relaxed">{drop.description}</p>
                 </div>
-                <div className="pt-4 border-t border-[#1A1A1A] flex justify-between items-center text-xs font-mono text-[#8E9192]">
+                <div className="pt-4 border-t border-rune-border flex justify-between items-center text-xs font-mono text-rune-secondary">
                   <span>LIMITED PREORDER RUN</span>
                   <span className="text-amber-300/80 font-bold uppercase">RETIRED // SOLD OUT</span>
                 </div>

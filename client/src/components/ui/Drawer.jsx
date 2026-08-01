@@ -31,18 +31,18 @@ export const Drawer = ({ isOpen, onClose, title, children }) => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="w-screen max-w-md bg-[#121314] border-l border-[#1A1A1A] flex flex-col shadow-2xl rounded-none"
+              className="w-screen max-w-md bg-rune-bg border-l border-rune-border flex flex-col shadow-2xl rounded-none"
               role="dialog"
               aria-modal="true"
             >
               {/* Header */}
-              <div className="p-6 border-b border-[#1A1A1A] flex justify-between items-center">
-                <h2 className="font-serif text-lg font-bold uppercase tracking-wider text-white">
+              <div className="p-6 border-b border-rune-border flex justify-between items-center">
+                <h2 className="font-serif text-lg font-bold uppercase tracking-wider text-rune-primary">
                   {title}
                 </h2>
                 <button
                   onClick={onClose}
-                  className="text-[#8E9192] hover:text-white transition-colors focus:outline-none"
+                  className="text-rune-secondary hover:text-rune-primary transition-colors focus:outline-none"
                   aria-label="Close drawer"
                 >
                   <X className="w-5 h-5" />

@@ -30,18 +30,18 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = 'max-w-lg' 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className={`relative w-full ${maxWidth} bg-[#121314] border border-[#1A1A1A] p-6 sm:p-8 space-y-6 shadow-2xl rounded-none z-10`}
+            className={`relative w-full ${maxWidth} bg-rune-bg border border-rune-border p-6 sm:p-8 space-y-6 shadow-2xl rounded-none z-10`}
             role="dialog"
             aria-modal="true"
           >
             {/* Header */}
-            <div className="flex justify-between items-center border-b border-[#1A1A1A] pb-4">
-              <h2 className="font-serif text-lg font-bold uppercase tracking-wider text-white">
+            <div className="flex justify-between items-center border-b border-rune-border pb-4">
+              <h2 className="font-serif text-lg font-bold uppercase tracking-wider text-rune-primary">
                 {title}
               </h2>
               <button
                 onClick={onClose}
-                className="text-[#8E9192] hover:text-white transition-colors focus:outline-none"
+                className="text-rune-secondary hover:text-rune-primary transition-colors focus:outline-none"
                 aria-label="Close dialog"
               >
                 <X className="w-5 h-5" />

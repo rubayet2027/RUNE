@@ -41,28 +41,28 @@ export const CountdownTimer = ({ targetDate, onExpire, label = 'PREORDER DROP WI
 
   return (
     <div className="flex flex-col items-center gap-3" aria-live="polite" aria-atomic="true">
-      <span className="text-[10px] uppercase tracking-[0.3em] text-[#8E9192] font-sans font-semibold">
+      <span className="text-[10px] uppercase tracking-[0.3em] text-rune-secondary font-sans font-semibold">
         {label}
       </span>
-      <div className="flex items-center gap-4 font-mono text-2xl sm:text-4xl font-bold tracking-widest text-white">
-        <div className="flex flex-col items-center bg-[#1A1A1A] border border-[#27272A] px-4 py-3 min-w-[70px]">
+      <div className="flex items-center gap-4 font-mono text-rune-primaryxl sm:text-4xl font-bold tracking-widest text-rune-primary">
+        <div className="flex flex-col items-center bg-rune-surface border border-rune-border px-4 py-3 min-w-[70px]">
           <span>{String(timeLeft.days).padStart(2, '0')}</span>
-          <span className="text-[9px] text-[#8E9192] font-sans font-medium tracking-[0.2em] mt-1">DAYS</span>
+          <span className="text-[9px] text-rune-secondary font-sans font-medium tracking-[0.2em] mt-1">DAYS</span>
         </div>
         <span className="text-[#444748]">:</span>
-        <div className="flex flex-col items-center bg-[#1A1A1A] border border-[#27272A] px-4 py-3 min-w-[70px]">
+        <div className="flex flex-col items-center bg-rune-surface border border-rune-border px-4 py-3 min-w-[70px]">
           <span>{String(timeLeft.hours).padStart(2, '0')}</span>
-          <span className="text-[9px] text-[#8E9192] font-sans font-medium tracking-[0.2em] mt-1">HRS</span>
+          <span className="text-[9px] text-rune-secondary font-sans font-medium tracking-[0.2em] mt-1">HRS</span>
         </div>
         <span className="text-[#444748]">:</span>
-        <div className="flex flex-col items-center bg-[#1A1A1A] border border-[#27272A] px-4 py-3 min-w-[70px]">
+        <div className="flex flex-col items-center bg-rune-surface border border-rune-border px-4 py-3 min-w-[70px]">
           <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
-          <span className="text-[9px] text-[#8E9192] font-sans font-medium tracking-[0.2em] mt-1">MIN</span>
+          <span className="text-[9px] text-rune-secondary font-sans font-medium tracking-[0.2em] mt-1">MIN</span>
         </div>
         <span className="text-[#444748]">:</span>
-        <div className="flex flex-col items-center bg-[#1A1A1A] border border-[#27272A] px-4 py-3 min-w-[70px]">
-          <span className="text-white">{String(timeLeft.seconds).padStart(2, '0')}</span>
-          <span className="text-[9px] text-[#8E9192] font-sans font-medium tracking-[0.2em] mt-1">SEC</span>
+        <div className="flex flex-col items-center bg-rune-surface border border-rune-border px-4 py-3 min-w-[70px]">
+          <span className="text-rune-primary">{String(timeLeft.seconds).padStart(2, '0')}</span>
+          <span className="text-[9px] text-rune-secondary font-sans font-medium tracking-[0.2em] mt-1">SEC</span>
         </div>
       </div>
     </div>

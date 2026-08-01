@@ -41,13 +41,13 @@ export const RegisterPage = () => {
   return (
     <div className="max-w-md mx-auto px-4 py-20 space-y-8">
       <div className="text-center space-y-2">
-        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           VIP MEMBERSHIP
         </span>
-        <h1 className="font-serif text-3xl font-extrabold text-white uppercase tracking-wider">
+        <h1 className="font-serif text-rune-primaryxl font-extrabold text-rune-primary uppercase tracking-wider">
           CREATE ACCOUNT
         </h1>
-        <p className="text-xs font-sans text-[#8E9192]">
+        <p className="text-xs font-sans text-rune-secondary">
           Join RUNE for early preorder access & archival tracking.
         </p>
       </div>
@@ -69,9 +69,9 @@ export const RegisterPage = () => {
           </Button>
 
           <div className="text-center pt-2">
-            <span className="text-xs text-[#8E9192] font-sans">
+            <span className="text-xs text-rune-secondary font-sans">
               Already have an account?{' '}
-              <Link to="/login" className="text-white hover:underline font-bold">
+              <Link to="/login" className="text-rune-primary hover:underline font-bold">
                 SIGN IN
               </Link>
             </span>

@@ -45,13 +45,13 @@ export const LoginPage = () => {
   return (
     <div className="max-w-md mx-auto px-4 py-24 space-y-8">
       <div className="text-center space-y-2">
-        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           AUTHENTICATION VAULT
         </span>
-        <h1 className="font-serif text-3xl font-extrabold text-white uppercase tracking-wider">
+        <h1 className="font-serif text-rune-primaryxl font-extrabold text-rune-primary uppercase tracking-wider">
           SIGN IN TO RUNE
         </h1>
-        <p className="text-xs font-sans text-[#8E9192]">
+        <p className="text-xs font-sans text-rune-secondary">
           Access your preorder reservations & VIP drop keys.
         </p>
       </div>
@@ -72,7 +72,7 @@ export const LoginPage = () => {
           </Button>
 
           <div className="text-center pt-2">
-            <span className="text-xs text-[#8E9192] font-sans">
+            <span className="text-xs text-rune-secondary font-sans">
               Secure authentication powered by JWT & bcrypt verification.
             </span>
           </div>

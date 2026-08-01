@@ -4,7 +4,7 @@ import { CountdownTimer } from '../../components/ui/CountdownTimer.jsx';
 
 export const DropHero = ({ drop }) => {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#121314] border-b border-[#1A1A1A]">
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-rune-bg border-b border-rune-border">
       <img
         src={drop.bannerImage}
         alt={drop.title}
@@ -17,11 +17,11 @@ export const DropHero = ({ drop }) => {
           <Badge variant="active">LIVE PREORDER DROP</Badge>
         </div>
 
-        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.1]">
+        <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-rune-primary max-w-4xl mx-auto leading-[1.1]">
           {drop.title}
         </h1>
 
-        <p className="text-xs sm:text-sm font-sans text-[#8E9192] max-w-xl mx-auto leading-relaxed tracking-wide">
+        <p className="text-xs sm:text-sm font-sans text-rune-secondary max-w-xl mx-auto leading-relaxed tracking-wide">
           {drop.description}
         </p>
 

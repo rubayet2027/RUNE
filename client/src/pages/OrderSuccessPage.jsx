@@ -17,20 +17,20 @@ export const OrderSuccessPage = () => {
           <CheckCircle2 className="w-8 h-8" />
         </div>
         <Badge variant="locked">PREORDER RESERVED & LOCKED</Badge>
-        <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white uppercase tracking-tight">
+        <h1 className="font-serif text-rune-primaryxl sm:text-5xl font-extrabold text-rune-primary uppercase tracking-tight">
           PREORDER CONFIRMED
         </h1>
-        <p className="text-xs font-mono text-[#8E9192] uppercase tracking-[0.2em]">
-          PREORDER REFERENCE: <span className="text-white font-bold">{orderNumber || 'RN-882910'}</span>
+        <p className="text-xs font-mono text-rune-secondary uppercase tracking-[0.2em]">
+          PREORDER REFERENCE: <span className="text-rune-primary font-bold">{orderNumber || 'RN-882910'}</span>
         </p>
       </div>
 
       {/* Overview Card */}
       <Card className="text-left space-y-4">
-        <div className="flex items-center gap-2 text-amber-300 font-mono text-xs border-b border-[#1A1A1A] pb-3">
+        <div className="flex items-center gap-2 text-amber-300 font-mono text-xs border-b border-rune-border pb-3">
           <Lock className="w-4 h-4" /> ORDER STATUS: LOCKED UNTIL DROP EXPIRES
         </div>
-        <p className="text-xs font-sans text-[#8E9192] leading-relaxed">
+        <p className="text-xs font-sans text-rune-secondary leading-relaxed">
           Your preorder reservation has been secured. Payment has been pre-authorized and your order is locked in our system. Once the active drop countdown finishes, the administrator will review all locked orders and submit them in bulk to Printful for production.
         </p>
       </Card>

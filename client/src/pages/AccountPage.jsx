@@ -37,15 +37,15 @@ export const AccountPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
       {/* User Header */}
-      <div className="border-b border-[#1A1A1A] pb-6 flex flex-col sm:flex-row justify-between sm:items-end gap-4">
+      <div className="border-b border-rune-border pb-6 flex flex-col sm:flex-row justify-between sm:items-end gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[#8E9192] uppercase tracking-[0.2em] mb-1">
-            <User className="w-4 h-4 text-white" /> RUNE VIP ACCOUNT
+          <div className="flex items-center gap-2 text-xs font-mono text-rune-secondary uppercase tracking-[0.2em] mb-1">
+            <User className="w-4 h-4 text-rune-primary" /> RUNE VIP ACCOUNT
           </div>
-          <h1 className="font-serif text-3xl font-bold text-white uppercase tracking-wider">
+          <h1 className="font-serif text-rune-primaryxl font-bold text-rune-primary uppercase tracking-wider">
             {user?.name || 'CUSTOMER ATELIER'}
           </h1>
-          <p className="text-xs font-mono text-[#8E9192] mt-1">{user?.email}</p>
+          <p className="text-xs font-mono text-rune-secondary mt-1">{user?.email}</p>
         </div>
 
         <button
@@ -59,28 +59,28 @@ export const AccountPage = () => {
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <Card>
-          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">VIP TIER</span>
-          <p className="font-serif text-xl text-white font-bold mt-2">OBLIVION FOUNDER</p>
+          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">VIP TIER</span>
+          <p className="font-serif text-xl text-rune-primary font-bold mt-2">OBLIVION FOUNDER</p>
           <span className="text-[10px] font-mono text-emerald-400 mt-2 block">EARLY PREORDER ACCESS ACTIVE</span>
         </Card>
 
         <Card>
-          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">TOTAL RESERVATIONS</span>
-          <p className="font-mono text-2xl text-white font-bold mt-2">{orders.length}</p>
-          <span className="text-[10px] font-mono text-[#8E9192] mt-2 block">LOCKED & FULFILLED PREORDERS</span>
+          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">TOTAL RESERVATIONS</span>
+          <p className="font-mono text-rune-primaryxl text-rune-primary font-bold mt-2">{orders.length}</p>
+          <span className="text-[10px] font-mono text-rune-secondary mt-2 block">LOCKED & FULFILLED PREORDERS</span>
         </Card>
 
         <Card>
-          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">DELIVERY REGION</span>
-          <p className="font-mono text-xl text-white font-bold mt-2">GLOBAL EXPRESS</p>
-          <span className="text-[10px] font-mono text-[#8E9192] mt-2 block">US / UK / CA / AU ELIGIBLE</span>
+          <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">DELIVERY REGION</span>
+          <p className="font-mono text-xl text-rune-primary font-bold mt-2">GLOBAL EXPRESS</p>
+          <span className="text-[10px] font-mono text-rune-secondary mt-2 block">US / UK / CA / AU ELIGIBLE</span>
         </Card>
       </div>
 
       {/* Order History */}
       <div className="space-y-4">
-        <h2 className="font-serif text-xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Package className="w-5 h-5 text-white" /> PREORDER RESERVATION HISTORY
+        <h2 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider flex items-center gap-2">
+          <Package className="w-5 h-5 text-rune-primary" /> PREORDER RESERVATION HISTORY
         </h2>
 
         {orders.length === 0 ? (
@@ -93,13 +93,13 @@ export const AccountPage = () => {
           <Table headers={['ORDER NUMBER', 'DROP BATCH', 'TOTAL AUTHORIZED', 'STATUS', 'RESERVED DATE']}>
             {orders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell className="font-mono font-bold text-white">{order.orderNumber}</TableCell>
-                <TableCell className="font-mono text-[#8E9192]">DROP 001</TableCell>
-                <TableCell className="font-mono font-bold text-white">${order.totalAmount} USD</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">{order.orderNumber}</TableCell>
+                <TableCell className="font-mono text-rune-secondary">DROP 001</TableCell>
+                <TableCell className="font-mono font-bold text-rune-primary">${order.totalAmount} USD</TableCell>
                 <TableCell>
                   <Badge variant={order.status === 'LOCKED' ? 'locked' : 'active'}>{order.status}</Badge>
                 </TableCell>
-                <TableCell className="font-mono text-[#8E9192]">
+                <TableCell className="font-mono text-rune-secondary">
                   {new Date(order.createdAt).toLocaleDateString()}
                 </TableCell>
               </TableRow>

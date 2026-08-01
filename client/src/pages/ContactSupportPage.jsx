@@ -42,13 +42,13 @@ export const ContactSupportPage = () => {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
       <div className="text-center space-y-2">
-        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           CONCIERGE DESK
         </span>
-        <h1 className="font-serif text-3xl font-extrabold text-white uppercase tracking-wider">
+        <h1 className="font-serif text-rune-primaryxl font-extrabold text-rune-primary uppercase tracking-wider">
           CUSTOMER SUPPORT & TICKETING
         </h1>
-        <p className="text-xs font-sans text-[#8E9192] max-w-md mx-auto">
+        <p className="text-xs font-sans text-rune-secondary max-w-md mx-auto">
           Need assistance with preorder reservations, address modifications, or sizing queries? Submit a ticket below.
         </p>
       </div>
@@ -63,13 +63,13 @@ export const ContactSupportPage = () => {
         {submitted ? (
           <div className="py-8 text-center space-y-4">
             <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
-            <h3 className="font-serif text-xl font-bold text-white uppercase tracking-wider">
+            <h3 className="font-serif text-xl font-bold text-rune-primary uppercase tracking-wider">
               TICKET SUBMITTED SUCCESSFULLY
             </h3>
-            <p className="text-xs font-mono text-[#8E9192]">
-              TICKET REFERENCE: <span className="text-white font-bold">{ticketRef}</span>
+            <p className="text-xs font-mono text-rune-secondary">
+              TICKET REFERENCE: <span className="text-rune-primary font-bold">{ticketRef}</span>
             </p>
-            <p className="text-xs font-sans text-[#8E9192] max-w-sm mx-auto">
+            <p className="text-xs font-sans text-rune-secondary max-w-sm mx-auto">
               Our atelier support team will review your query and respond via email within 24 hours.
             </p>
             <Button variant="outline" onClick={() => setSubmitted(false)}>
@@ -89,13 +89,13 @@ export const ContactSupportPage = () => {
               error={errors.subject?.message}
             />
             <div className="space-y-2">
-              <label className="block text-xs font-sans uppercase tracking-widest text-[#8E9192] font-semibold">
+              <label className="block text-xs font-sans uppercase tracking-widest text-rune-secondary font-semibold">
                 Message Details
               </label>
               <textarea
                 rows={4}
                 {...register('message')}
-                className="w-full bg-[#121314] border border-[#1A1A1A] text-white px-4 py-3 text-xs focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-rune-bg border border-rune-border text-rune-primary px-4 py-3 text-xs focus:outline-none focus:border-rune-primary transition-colors"
                 placeholder="Describe your inquiry..."
               />
               {errors.message && <p className="text-[11px] font-mono text-red-400">{errors.message.message}</p>}

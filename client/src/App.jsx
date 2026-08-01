@@ -1,12 +1,15 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { CartProvider } from './context/CartContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import { ErrorBoundary } from './components/ui/ErrorBoundary.jsx';
 import { RootLayout } from './components/layout/RootLayout.jsx';
 import { ProtectedRoute } from './components/layout/ProtectedRoute.jsx';
 import { StateView } from './components/ui/StateView.jsx';
+import { AppLoader, RouteLoader } from './components/ui/Loader.jsx';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Route Level Code Splitting (React.lazy) for Customer Website Suite
 const DropPage = lazy(() => import('./pages/DropPage.jsx').then((m) => ({ default: m.DropPage })));
@@ -37,47 +40,66 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
+  const [appLoading, setAppLoading] = useState(true);
+
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <CartProvider>
-            <Router>
-              <Suspense fallback={<StateView type="loading" title="LOADING ATELIER INTERFACE..." />}>
-                <Routes>
-                  <Route element={<RootLayout />}>
-                    {/* Customer Website Suite Routes */}
-                    <Route path="/" element={<DropPage />} />
-                    <Route path="/product/:slug" element={<ProductPage />} />
-                    <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
-                    <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
-                    <Route path="/track" element={<OrderTrackingPage />} />
-                    <Route path="/track/:orderNumber" element={<OrderTrackingPage />} />
-                    <Route path="/archive" element={<ArchivePage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="/contact" element={<ContactSupportPage />} />
-                    <Route path="/support" element={<ContactSupportPage />} />
-                    <Route path="/faq" element={<FAQPage />} />
-                    <Route path="/legal" element={<LegalPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-                    <Route path="/orders" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-                    
-                    {/* Protected Admin Route */}
-                    <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboardPage /></ProtectedRoute>} />
-                    
-                    {/* 404 Catch-All */}
-                    <Route path="*" element={<StateView type="error" title="PAGE NOT FOUND" description="The requested atelier page does not exist." />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </Router>
-          </CartProvider>
-        </AuthProvider>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <CartProvider>
+              <AnimatePresence mode="wait">
+                {appLoading ? (
+                  <AppLoader key="loader" onComplete={() => setAppLoading(false)} />
+                ) : (
+                  <motion.div
+                    key="content"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
+                    className="min-h-screen bg-rune-bg"
+                  >
+                    <Router>
+                      <Suspense fallback={<RouteLoader />}>
+                        <Routes>
+                          <Route element={<RootLayout />}>
+                            {/* Customer Website Suite Routes */}
+                            <Route path="/" element={<DropPage />} />
+                            <Route path="/product/:slug" element={<ProductPage />} />
+                            <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+                            <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
+                            <Route path="/track" element={<OrderTrackingPage />} />
+                            <Route path="/track/:orderNumber" element={<OrderTrackingPage />} />
+                            <Route path="/archive" element={<ArchivePage />} />
+                            <Route path="/about" element={<AboutPage />} />
+                            <Route path="/contact" element={<ContactSupportPage />} />
+                            <Route path="/support" element={<ContactSupportPage />} />
+                            <Route path="/faq" element={<FAQPage />} />
+                            <Route path="/legal" element={<LegalPage />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                            <Route path="/orders" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                            
+                            {/* Protected Admin Route */}
+                            <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboardPage /></ProtectedRoute>} />
+                            
+                            {/* 404 Catch-All */}
+                            <Route path="*" element={<StateView type="error" title="PAGE NOT FOUND" description="The requested atelier page does not exist." />} />
+                          </Route>
+                        </Routes>
+                      </Suspense>
+                    </Router>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </CartProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
+
 
 export default App;

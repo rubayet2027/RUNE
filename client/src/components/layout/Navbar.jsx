@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, User, Shield, Menu, X, PackageSearch } from 'lucide-react';
 import { useCart } from '../../context/CartContext.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import { BRAND_CONFIG } from '../../../../shared/constants/index.js';
 
 export const Navbar = () => {
   const { totalCount, openCart } = useCart();
   const { isAuthenticated, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header role="banner" className="sticky top-0 z-40 w-full glass-panel border-b border-[#1A1A1A]">
+    <header role="banner" className="sticky top-0 z-40 w-full glass-panel border-b border-rune-border">
       {/* Skip to Main Content Link for Screen Readers & Keyboard Users */}
       <a
         href="#main-content"
@@ -23,29 +25,29 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Left Primary Navigation */}
         <nav aria-label="Primary Navigation" className="hidden md:flex items-center gap-6 text-xs font-sans uppercase tracking-[0.2em] font-semibold">
-          <Link to="/" className="text-white hover:text-[#C9C6C5] transition-colors">
+          <Link to="/" className="text-rune-primary hover:text-rune-primary transition-colors">
             DROP
           </Link>
-          <Link to="/archive" className="text-[#8E9192] hover:text-white transition-colors">
+          <Link to="/archive" className="text-rune-secondary hover:text-rune-primary transition-colors">
             ARCHIVE
           </Link>
-          <Link to="/track" className="text-[#8E9192] hover:text-white transition-colors">
+          <Link to="/track" className="text-rune-secondary hover:text-rune-primary transition-colors">
             TRACK ORDER
           </Link>
-          <Link to="/about" className="text-[#8E9192] hover:text-white transition-colors">
+          <Link to="/about" className="text-rune-secondary hover:text-rune-primary transition-colors">
             ABOUT
           </Link>
-          <Link to="/support" className="text-[#8E9192] hover:text-white transition-colors">
+          <Link to="/support" className="text-rune-secondary hover:text-rune-primary transition-colors">
             SUPPORT
           </Link>
         </nav>
 
         {/* Center Brand Logo (Bodoni Moda Serif) */}
         <Link to="/" aria-label={`${BRAND_CONFIG.name} Homepage`} className="flex flex-col items-center">
-          <span className="font-serif text-3xl tracking-[0.3em] font-bold text-white">
+          <span className="font-serif text-rune-primaryxl tracking-[0.3em] font-bold text-rune-primary">
             {BRAND_CONFIG.name}
           </span>
-          <span className="text-[8px] tracking-[0.4em] text-[#8E9192] font-sans uppercase font-medium">
+          <span className="text-[8px] tracking-[0.4em] text-rune-secondary font-sans uppercase font-medium">
             PARIS / NEW YORK / TOKYO
           </span>
         </Link>
@@ -55,7 +57,7 @@ export const Navbar = () => {
           {isAdmin && (
             <Link
               to="/admin"
-              className="hidden sm:flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] hover:text-white transition-colors"
+              className="hidden sm:flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary hover:text-rune-primary transition-colors"
               title="Admin Control Center"
             >
               <Shield className="w-3.5 h-3.5" aria-hidden="true" />
@@ -63,9 +65,17 @@ export const Navbar = () => {
             </Link>
           )}
 
+          <button
+            onClick={toggleTheme}
+            className="text-rune-secondary hover:text-rune-primary transition-colors text-[10px] font-sans uppercase tracking-[0.25em] focus:outline-none"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? 'LIGHT' : 'DARK'}
+          </button>
+
           <Link
             to={isAuthenticated ? '/account' : '/login'}
-            className="text-[#8E9192] hover:text-white transition-colors"
+            className="text-rune-secondary hover:text-rune-primary transition-colors"
             aria-label={isAuthenticated ? 'Customer Account' : 'Account Authentication'}
           >
             <User className="w-5 h-5" aria-hidden="true" />
@@ -73,7 +83,7 @@ export const Navbar = () => {
 
           <button
             onClick={openCart}
-            className="relative flex items-center gap-2 text-white hover:text-[#C9C6C5] transition-colors focus:outline-none"
+            className="relative flex items-center gap-2 text-rune-primary hover:text-rune-primary transition-colors focus:outline-none"
             aria-label={`Open Preorder Bag (${totalCount} items)`}
           >
             <ShoppingBag className="w-5 h-5" aria-hidden="true" />
@@ -86,7 +96,7 @@ export const Navbar = () => {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-rune-primary focus:outline-none"
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle mobile menu"
           >
@@ -97,34 +107,34 @@ export const Navbar = () => {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <nav aria-label="Mobile Navigation" className="md:hidden bg-[#121314] border-b border-[#1A1A1A] px-6 py-6 flex flex-col gap-4 text-xs uppercase tracking-[0.2em] font-sans">
-          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 border-b border-[#1A1A1A]">
+        <nav aria-label="Mobile Navigation" className="md:hidden bg-rune-bg border-b border-rune-border px-6 py-6 flex flex-col gap-4 text-xs uppercase tracking-[0.2em] font-sans">
+          <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-rune-primary py-2 border-b border-rune-border">
             ACTIVE DROP
           </Link>
-          <Link to="/archive" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/archive" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             ARCHIVE
           </Link>
-          <Link to="/track" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/track" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             TRACK ORDER
           </Link>
-          <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             ABOUT
           </Link>
-          <Link to="/faq" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/faq" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             FAQ
           </Link>
-          <Link to="/support" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/support" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             SUPPORT
           </Link>
-          <Link to="/legal" onClick={() => setMobileMenuOpen(false)} className="text-[#8E9192] py-2 border-b border-[#1A1A1A]">
+          <Link to="/legal" onClick={() => setMobileMenuOpen(false)} className="text-rune-secondary py-2 border-b border-rune-border">
             TERMS & PRIVACY
           </Link>
           {isAuthenticated ? (
-            <Link to="/account" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 font-bold">
+            <Link to="/account" onClick={() => setMobileMenuOpen(false)} className="text-rune-primary py-2 font-bold">
               MY ACCOUNT & ORDERS
             </Link>
           ) : (
-            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="text-white py-2 font-bold">
+            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="text-rune-primary py-2 font-bold">
               SIGN IN / REGISTER
             </Link>
           )}

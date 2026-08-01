@@ -2,10 +2,10 @@ import React from 'react';
 
 export const Badge = ({ children, variant = 'default', className = '' }) => {
   const variants = {
-    default: 'bg-[#1A1A1A] text-white border border-[#444748]',
+    default: 'bg-rune-surface text-rune-primary border border-rune-border',
     active: 'bg-white text-black font-semibold',
     locked: 'bg-amber-500/10 text-amber-300 border border-amber-500/30',
-    archived: 'bg-[#121314] text-[#8E9192] border border-[#1A1A1A]',
+    archived: 'bg-rune-bg text-rune-secondary border border-rune-border',
     fulfilled: 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30',
   };
 

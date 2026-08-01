@@ -17,6 +17,10 @@ build/
 .env.production.local
 *.env
 
+# Uploads & User Media (Keep directory with .gitkeep)
+server/public/uploads/*
+!server/public/uploads/.gitkeep
+
 # Database & SQLite Artifacts
 *.db
 *.sqlite

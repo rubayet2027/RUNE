@@ -19,7 +19,7 @@ export class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center space-y-6 bg-[#121314] text-[#E3E2E2]">
+        <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center space-y-6 bg-rune-bg text-rune-primary">
           <div className="w-16 h-16 bg-red-500/10 border border-red-500/30 text-red-400 flex items-center justify-center rounded-none">
             <ShieldAlert className="w-8 h-8" />
           </div>
@@ -27,10 +27,10 @@ export class ErrorBoundary extends React.Component {
             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-red-400 font-bold block">
               APPLICATION RUNTIME EXCEPTION
             </span>
-            <h1 className="font-serif text-2xl font-bold uppercase text-white tracking-wider">
+            <h1 className="font-serif text-rune-primaryxl font-bold uppercase text-rune-primary tracking-wider">
               SOMETHING WENT WRONG
             </h1>
-            <p className="text-xs font-sans text-[#8E9192] leading-relaxed">
+            <p className="text-xs font-sans text-rune-secondary leading-relaxed">
               An unhandled rendering exception occurred. The error details have been logged for inspection.
             </p>
           </div>

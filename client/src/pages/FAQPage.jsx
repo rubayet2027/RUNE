@@ -31,13 +31,13 @@ export const FAQPage = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-12">
       <div className="text-center space-y-2">
-        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#8E9192] font-semibold">
+        <span className="text-[10px] font-sans uppercase tracking-[0.2em] text-rune-secondary font-semibold">
           KNOWLEDGE BASE
         </span>
-        <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white uppercase tracking-wider">
+        <h1 className="font-serif text-rune-primaryxl sm:text-5xl font-extrabold text-rune-primary uppercase tracking-wider">
           FREQUENTLY ASKED QUESTIONS
         </h1>
-        <p className="text-xs font-sans text-[#8E9192] max-w-md mx-auto">
+        <p className="text-xs font-sans text-rune-secondary max-w-md mx-auto">
           Everything you need to know about preorder locks, Portuguese fabric milling, and global fulfillment.
         </p>
       </div>
@@ -45,14 +45,14 @@ export const FAQPage = () => {
       <div className="space-y-4">
         {faqItems.map((item, idx) => (
           <Card key={idx} className="cursor-pointer" onClick={() => setOpenIdx(openIdx === idx ? null : idx)}>
-            <div className="flex justify-between items-center text-xs font-serif font-bold text-white uppercase tracking-wider">
+            <div className="flex justify-between items-center text-xs font-serif font-bold text-rune-primary uppercase tracking-wider">
               <span className="flex items-center gap-3">
-                <HelpCircle className="w-4 h-4 text-[#8E9192]" /> {item.q}
+                <HelpCircle className="w-4 h-4 text-rune-secondary" /> {item.q}
               </span>
-              <ChevronDown className={`w-4 h-4 text-[#8E9192] transition-transform ${openIdx === idx ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-rune-secondary transition-transform ${openIdx === idx ? 'rotate-180' : ''}`} />
             </div>
             {openIdx === idx && (
-              <p className="text-xs font-sans text-[#8E9192] mt-4 leading-relaxed pt-3 border-t border-[#1A1A1A]">
+              <p className="text-xs font-sans text-rune-secondary mt-4 leading-relaxed pt-3 border-t border-rune-border">
                 {item.a}
               </p>
             )}
